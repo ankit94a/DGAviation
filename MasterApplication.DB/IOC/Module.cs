@@ -15,14 +15,7 @@ namespace MasterApplication.DB.IOC
 			var dic = new Dictionary<Type, Type>
 			{
 				{typeof(IAttributeDB), typeof(AttributeDb) },
-				{typeof(IPppMasterDB), typeof(PppMasterDB) },
                 {typeof(IUserDB), typeof(UserDB) },
-				//{typeof(IAttributeDB), typeof(AttributeDB) },
-				//{typeof(IEmerDB), typeof(EmerDB) },
-				//{typeof(IPolicyDB), typeof(PolicyDB) },
-				//{typeof(IFileDB), typeof(FileDB) },
-				//{typeof(ItechnicalAoAiDB), typeof(TechnicalAoAiDB) },
-				//{typeof(IRoleOfMagDb), typeof(RoleOfMagDb) }
 
 			};
 			return dic;
