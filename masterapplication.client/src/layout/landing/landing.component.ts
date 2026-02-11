@@ -18,13 +18,12 @@ import { BISMatDialogService } from 'src/shared-library/service/master-mat-dialo
   styleUrl: './landing.component.css',
 })
 export class LandingComponent {
-  private dailog = inject(MatDialog);
-  private dialogServic = inject(BISMatDialogService)
+  private dialogService = inject(BISMatDialogService)
   constructor(){
 
   }
 
   openDialog(){
-    this.dialogServic.open(LoginComponent,null)
+    this.dialogService.open(LoginComponent, null,'20vw')
   }
 }

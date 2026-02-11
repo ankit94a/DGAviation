@@ -1,38 +1,79 @@
-<div class="modal fade" id="loginModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+<div class="login-wrapper">
+  <div class="login-card">
 
-      <div class="modal-header bg-navy text-white">
-        <h5 class="modal-title">Secure Portal Login</h5>
-        <button type="button" class="btn-close btn-close-white"
-                data-bs-dismiss="modal"></button>
+    <!-- Header -->
+<div class="login-header">
+  <img src="logo-sm.png" class="login-logo" alt="DGCA Logo">
+  <h3>Secure Login</h3>
+  <p>Directorate General of Civil Aviation</p>
+</div>
+
+    <form [formGroup]="loginform" (ngSubmit)="doLogin()">
+
+      <!-- Username -->
+<div class="form-group">
+  <label>Username</label>
+
+  <div class="input-wrapper">
+    <span class="icon-box">
+      <img src="user-blue.png" alt="user">
+    </span>
+
+    <input type="text"
+           class="form-control"
+           formControlName="username"
+           placeholder="Enter username">
+  </div>
+</div>
+
+
+<!-- Password -->
+<div class="form-group">
+  <label>Password</label>
+
+  <div class="input-wrapper">
+    <span class="icon-box">
+      <img src="{{lockImage}}"
+           alt="lock"
+           (click)="togglePasswordVisibility()">
+    </span>
+
+    <input [type]="showPassword ? 'text' : 'password'"
+           class="form-control"
+           formControlName="password"
+           placeholder="Enter password">
+  </div>
+</div>
+
+
+      <!-- Captcha -->
+    <div class="form-group captcha-box">
+  <div class="captcha-img">
+    <canvas #captchaCanvas width="140" height="45"></canvas>
+  </div>
+
+  <input type="text"
+         class="form-control no-pad"
+         formControlName="code"
+         placeholder="Enter captcha">
+</div>
+
+
+      <!-- Error -->
+      <div class="error-text" *ngIf="errorMessage">
+        {{ errorMessage }}
       </div>
 
-      <div class="modal-body p-4">
+      <!-- Actions -->
+      <button type="submit" class="btn-login">
+        Login Securely
+      </button>
 
-        <!-- Place Your Existing Angular Login Form Here -->
-        <!-- Just paste your form [formGroup]="loginform" inside here -->
-
-        <form [formGroup]="loginform" (ngSubmit)="doLogin()">
-
-          <mat-form-field appearance="outline" class="w-100 mb-3">
-            <mat-label>Username</mat-label>
-            <input matInput formControlName="username" required>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="w-100 mb-3">
-            <mat-label>Password</mat-label>
-            <input matInput type="password" formControlName="password" required>
-          </mat-form-field>
-
-          <button class="btn btn-primary w-100">
-            Authenticate
-          </button>
-
-        </form>
-
+      <div class="login-footer">
+        <a type="button" (click)="forgetPs()">Forgot Password?</a>
       </div>
 
-    </div>
+    </form>
+
   </div>
 </div>

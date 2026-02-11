@@ -8,7 +8,7 @@ export const routes: Routes = [
     redirectTo: 'login'
   },
   {
-    path: 'login',
+    path: 'landing',
     loadComponent: () =>
       import('../layout/landing/landing.component').then(m => m.LandingComponent),
     //  canActivate: [AuthGuard],

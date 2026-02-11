@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { SharedLibraryModule } from 'src/shared-library/shared-library.module';
   imports: [SharedLibraryModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
+  standalone:true
 })
 export class LoginComponent {
 loginform: FormGroup;
@@ -21,6 +22,8 @@ loginform: FormGroup;
   captchaCode:CaptchaRequest = new CaptchaRequest();
   errorMessage:string = '';
   lockImage:string = 'lock.png';
+    @ViewChild('captchaCanvas', { static: true })
+captchaCanvas!: ElementRef<HTMLCanvasElement>;
   constructor(private fb: FormBuilder,private rsaService:RSAService,private apiService:ApiService,private toastr:ToastrService,private authService:AuthService,private router: Router,private dialog : MatDialog){
     this.loginform = this.fb.group({
       username: ['', [Validators.required]],
@@ -31,6 +34,37 @@ loginform: FormGroup;
      this.getCaptcha()
   }
 
+
+ngAfterViewInit() {
+  this.drawCaptcha(this.captchaCode.code);
+}
+
+drawCaptcha(text: string) {
+  const canvas = this.captchaCanvas.nativeElement;
+  const ctx = canvas.getContext('2d')!;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // background
+  ctx.fillStyle = '#2f3b45';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // noise lines
+  for (let i = 0; i < 5; i++) {
+    ctx.strokeStyle = '#555';
+    ctx.beginPath();
+    ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+    ctx.stroke();
+  }
+
+  // text
+  ctx.font = '22px Arial';
+  ctx.fillStyle = '#ffd24c';
+  ctx.setTransform(1, 0.1, -0.1, 1, 0, 0);
+  ctx.fillText(text, 25, 30);
+}
+
   togglePasswordVisibility() {
     this.lockImage = this.lockImage == 'lock.png' ? 'unlock.png':'lock.png';
     this.showPassword = !this.showPassword;
@@ -38,8 +72,8 @@ loginform: FormGroup;
  getCaptcha() {
   this.apiService.getWithHeaders('auth/generate').subscribe({
     next: (res) => {
-
       this.captchaCode = res;
+      this.drawCaptcha(this.captchaCode.code);
       this.loginform.patchValue({ token: res.token });
     },
     error: (err) => {
@@ -71,9 +105,9 @@ loginform: FormGroup;
         this.apiService.postWithHeader('auth/login', encryptedPayload).subscribe({
           next: (res: any) => {
             if (res) {
-              this.authService.setRoleType()
+              // this.authService.setRoleType()
               this.dialog.closeAll();
-              this.router.navigate(['/wing']);
+              this.router.navigate(['/dashboard']);
               this.errorMessage = '';
             }
             else {

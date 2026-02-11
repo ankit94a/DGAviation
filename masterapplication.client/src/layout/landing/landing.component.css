@@ -8,8 +8,8 @@
 
 .hero-section {
   background: linear-gradient(rgba(11,28,45,0.85), rgba(11,28,45,0.85)),
-              url('public/aircraft-bg.jpg') center/cover no-repeat;
-  height: 85vh;
+              url('public/hero.jpg') center/cover no-repeat;
+  height: 60vh;
 }
 
 .card {
@@ -19,3 +19,28 @@
 .navbar-brand {
   font-size: 1rem;
 }
+
+.hero-img {
+  height: 70vh;
+  object-fit: cover;
+}
+
+.carousel-caption {
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+@media (max-width: 768px) {
+  .hero-img {
+    height: 70vh;
+  }
+
+  .carousel-caption h1 {
+    font-size: 1.6rem;
+  }
+
+  .carousel-caption p {
+    font-size: 1rem;
+  }
+}
+
