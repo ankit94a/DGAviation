@@ -1,0 +1,21 @@
+.bg-navy {
+  background-color: #0b1c2d;
+}
+
+.text-navy {
+  color: #0b1c2d;
+}
+
+.hero-section {
+  background: linear-gradient(rgba(11,28,45,0.85), rgba(11,28,45,0.85)),
+              url('public/aircraft-bg.jpg') center/cover no-repeat;
+  height: 85vh;
+}
+
+.card {
+  border-radius: 12px;
+}
+
+.navbar-brand {
+  font-size: 1rem;
+}

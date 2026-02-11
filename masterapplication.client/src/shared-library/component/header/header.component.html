@@ -1,0 +1,45 @@
+<mat-toolbar class="app-header">
+  <mat-toolbar-row>
+    <div class="contents">
+      <div fxShow="true">
+        @if (wing$ | async; as wing) {
+        <button mat-icon-button (click)="toggleSideBar()">
+          <img src="bars.svg" alt="bars">
+        </button>
+        }
+      </div>
+      <span class="inactivity-timer mx-2">
+        {{ timer$() | timer}}
+      </span>
+
+      <!-- <button mat-button class="inactivity-timer" (click)="onLoggedout()">
+      <span > Sign out</span>
+    </button> -->
+      <button matButton [matMenuTriggerFor]="beforeMenu">
+        <img src="user.png" alt="user" height="50px">
+      </button>
+      <mat-menu #beforeMenu="matMenu" xPosition="before">
+        <div class="container d-flex justify-content-center">
+          <div class="profile-card">
+            <div class="text-center">
+              <img src="https://randomuser.me/api/portraits/men/52.jpg" alt="User Profile"
+                class="rounded-circle profile-img mb-3">
+              <h3 class="card-title mb-2">John Doe</h3>
+              <p class="card-text text-muted mb-3">Web Developer</p>
+              <p class="card-text mb-4">Passionate about creating beautiful and functional websites. Always learning and
+                exploring new technologies.</p>
+              <!-- <div class="social-icons mb-4">
+                <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="me-2"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+              </div> -->
+              <button  class="btn btn-danger btn-lg w-100" (click)="onLoggedout()">Sign Out</button>
+            </div>
+          </div>
+        </div>
+      </mat-menu>
+    </div>
+  </mat-toolbar-row>
+
+</mat-toolbar>

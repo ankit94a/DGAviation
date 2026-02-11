@@ -1,0 +1,19 @@
+<mat-drawer-container>
+  <mat-drawer mode="side" [opened]="sideBarOpen">
+    <mat-toolbar>
+      <img class="logo" src="/logo.png" alt="Logo"> &nbsp;
+      <span class="brand-caption">Budget & Assets Tracker</span>
+
+    </mat-toolbar>
+    <hr/>
+    <app-sidebar (isloaded)="isLoaded($event)"></app-sidebar>
+  </mat-drawer>
+  <mat-drawer-content class="drawer-container">
+    <app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
+    <div class="content">
+      <!-- <ngx-spinner type="square-jelly-box" class="text-white">Loading...</ngx-spinner> -->
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+
+</mat-drawer-container>

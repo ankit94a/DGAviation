@@ -1,0 +1,31 @@
+<div class="login-box" *ngIf="!isOfficerGetToken">
+  <h2>Officer Login</h2>
+<div *ngIf="tokenErrorMessage.length > 0">
+  <p style="color: rgba(253, 3, 3, 0.466);">{{ tokenErrorMessage }}</p>
+  <button matFab extended (click)="getEcrTokenDetails()" class="px-3">
+        <img src="refresh.svg" alt="refresh" height="30px">
+        Refresh
+      </button>
+</div>
+
+
+
+  <!-- <form  *ngIf="tokenInfo" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label>Name - {{subject.label}} Serial No - {{subject.serialNumber}}</label>
+    <label for="pin">Enter PIN</label>
+    <input type="password" id="pin" formControlName="pin" placeholder="Enter Token PIN" />
+    <div *ngIf="form.controls['pin'].invalid && form.controls['pin'].touched" class="error">
+      PIN is required
+    </div>
+
+    <button type="submit" [disabled]="form.invalid" class="btn-all btn-danger">
+      Validate PIN
+    </button>
+    <div *ngIf="pinErrorMessage">+
+  <p style="color: rgba(253, 3, 3, 0.466);">{{ pinErrorMessage.message || pinErrorMessage }}</p>
+</div>
+  </form>
+  <div *ngIf="validationResult">
+    <p class="success">PIN validated successfully.</p>
+  </div> -->
+</div>

@@ -1,0 +1,26 @@
+[
+
+  {
+    "text": "Dashboard",
+    "icon": "dashboard",
+    "routerLink": "/dashboard",
+    "permissionName": "Dashboard",
+    "permissionAction": "ViewAll",
+    "children": [
+    ]
+  },
+  {
+    "text": "Priority Project (PPP)",
+    "icon": "low_priority",
+    "routerLink": "/ppp",
+    "permissionName": "PPP",
+    "permissionAction": "ViewAll"
+  },
+  {
+    "text": "Attribute",
+    "icon": "dns",
+    "routerLink": "/attribute",
+    "permissionName": "Attribute",
+    "permissionAction": "ViewAll"
+  }
+]

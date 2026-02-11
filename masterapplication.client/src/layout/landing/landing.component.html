@@ -1,0 +1,151 @@
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-navy shadow">
+  <div class="container">
+    <a class="navbar-brand fw-bold text-uppercase" href="#">
+      <img src="logo.webp" height="40" class="me-2">
+      Directorate General – Aviation Wing
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+        <li class="nav-item"><a class="nav-link" href="#about">Overview</a></li>
+        <li class="nav-item"><a class="nav-link" href="#operations">Operations</a></li>
+        <li class="nav-item"><a class="nav-link" href="#security">Security</a></li>
+        <li class="nav-item ms-lg-3">
+          <button class="btn btn-outline-light btn-sm px-4"
+                  data-bs-toggle="modal"
+                  data-bs-target="#loginModal" (click)="openDialog()">
+            Secure Login
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+<!-- ================= HERO SECTION ================= -->
+<section class="hero-section text-white d-flex align-items-center">
+  <div class="container text-center">
+    <h1 class="display-5 fw-bold text-uppercase mb-3">
+      Directorate General Of Civil Aviation
+    </h1>
+    <p class="lead mb-4">
+      Advanced Digital Command & Control Platform for Aviation Governance,
+      Fleet Oversight, and Mission Management.
+    </p>
+    <button class="btn btn-warning px-5 py-2 fw-bold"
+            data-bs-toggle="modal"
+            data-bs-target="#loginModal">
+      Access Secure Portal
+    </button>
+  </div>
+</section>
+
+
+<!-- ================= ABOUT ================= -->
+<section id="about" class="py-5 bg-light">
+  <div class="container text-center">
+    <h2 class="fw-bold text-navy mb-4">Strategic Aviation Oversight</h2>
+    <p class="text-muted mx-auto" style="max-width:900px">
+      The DG Aviation Wing system ensures structured mission approvals,
+      centralized fleet tracking, regulatory compliance, and real-time
+      operational monitoring. Designed to meet ministry-level standards
+      of accountability and national aviation governance.
+    </p>
+  </div>
+</section>
+
+
+<!-- ================= OPERATIONS ================= -->
+<section id="operations" class="py-5 bg-white">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-navy">Core Operational Modules</h2>
+    </div>
+
+    <div class="row g-4 text-center">
+
+      <div class="col-md-4">
+        <div class="card shadow h-100 p-4 border-0">
+          <i class="bi bi-airplane fs-1 text-navy mb-3"></i>
+          <h5 class="fw-bold">Fleet Management</h5>
+          <p class="small text-muted">
+            Aircraft lifecycle tracking, maintenance logs,
+            and readiness status monitoring.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow h-100 p-4 border-0">
+          <i class="bi bi-map fs-1 text-navy mb-3"></i>
+          <h5 class="fw-bold">Mission Command</h5>
+          <p class="small text-muted">
+            Secure mission approvals, digital flight tracking,
+            and command-level reporting.
+          </p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow h-100 p-4 border-0">
+          <i class="bi bi-shield-lock fs-1 text-navy mb-3"></i>
+          <h5 class="fw-bold">Security & Compliance</h5>
+          <p class="small text-muted">
+            Role-based access control, audit trails,
+            and regulatory compliance enforcement.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= SECURITY STRIP ================= -->
+<section id="security" class="py-5 bg-navy text-white text-center">
+  <div class="container">
+    <div class="row g-4">
+
+      <div class="col-md-4">
+        <h4 class="fw-bold">24/7 Monitoring</h4>
+        <p>Operational Command Visibility</p>
+      </div>
+
+      <div class="col-md-4">
+        <h4 class="fw-bold">Encrypted System</h4>
+        <p>Defense-grade Data Security</p>
+      </div>
+
+      <div class="col-md-4">
+        <h4 class="fw-bold">Central Governance</h4>
+        <p>Ministry-Level Oversight</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+<footer class="bg-dark text-white py-4 text-center">
+  <div class="container">
+    <p class="fw-bold mb-1">
+      Ministry of Civil / Defense Aviation
+    </p>
+    <p class="small mb-0">
+      © 2026 Directorate General Aviation Wing. All Rights Reserved.
+    </p>
+  </div>
+</footer>
+
+
+
+<!-- ================= LOGIN MODAL ================= -->
+
