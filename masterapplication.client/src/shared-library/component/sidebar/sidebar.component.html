@@ -1,37 +1,63 @@
 
+<mat-nav-list class="sidebar-nav">
 
-<mat-nav-list class="sidebar-img">
-  <a class="navbar-brand" href="/dashboard"></a>
-  @for (menu of sideBarMenus; track menu) {
-    <span>
-    <a mat-list-item (click)="addExpandClass(menu.text)"
-      [routerLink]="menu.routerLink" routerLinkActive="active">
-      <!-- <img [src]="'assets/icon' + menu.icon" alt="{{ menu.text }}" width="20" height="20" /> -->
-       <mat-icon>{{menu.icon}}</mat-icon>
-      <span class="nav-caption mx-2">{{menu.text}}</span>
-      @if (menu.children?.length) {
-        <!-- <img
-          src="assets/icon/chevron-down.svg"
-          alt="Chevron Down Icon"
-          [ngClass]="{'rotated': showMenu === menu.text}"
-          width="14" height="14" /> -->
-
-      }
+  <div class="sidebar-brand">
+    <a class="navbar-brand" href="/dashboard">
+      <div class="brand-logo ">
+        <mat-icon>inventory_2</mat-icon>
+        <span class="brand-text menu-text">DG Avaition Wing</span>
+      </div>
     </a>
-    @if (menu.children?.length) {
-      <ul
-        class="submenu" [ngClass]="{'expanded': showMenu === menu.text}">
-        @for (subMenu of menu.children; track subMenu) {
-          <li class="nav-item">
-            <a mat-list-item [routerLink]="subMenu.routerLink" routerLinkActive="active">
-              <!-- <img [src]="'assets/icon' + subMenu.icon" alt="{{ subMenu.text }}" width="20" height="20" /> -->
-               <mat-icon>{{subMenu.icon}}</mat-icon>
-              <span class="nav-caption mx-2">{{subMenu.text}}</span>
+  </div>
+
+
+  @for (menu of sideBarMenus; track menu.text) {
+    <div class="menu-item" [class.active-parent]="isMenuActive(menu)">
+      <a mat-list-item
+         class="menu-link"
+         (click)="toggleMenu(menu)"
+         [routerLink]="menu.children?.length ? null : menu.routerLink"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}">
+
+        <div class="menu-content-container">
+          <div class="menu-icon-badge">
+            <mat-icon [class.active-icon]="isMenuActive(menu)">{{menu.icon}}</mat-icon>
+            <!-- You can add badge logic here if needed -->
+          </div>
+
+          <span class="menu-text" [class.active-text]="isMenuActive(menu)">
+            {{menu.text}}
+          </span>
+
+          @if (menu.children && menu.children.length > 0) {
+            <span class="menu-indicator" [class.rotated]="isMenuExpanded(menu)">
+              <mat-icon>chevron_right</mat-icon>
+            </span>
+          }
+        </div>
+      </a>
+
+
+      @if (menu.children && menu.children.length > 0) {
+        <div class="submenu-container" [class.expanded]="isMenuExpanded(menu)">
+          @for (subMenu of menu.children; track subMenu.text) {
+            <a mat-list-item
+               class="submenu-item"
+               [routerLink]="subMenu.routerLink"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+               (click)="setActiveMenu(menu)">
+
+              <div class="submenu-content">
+                <div class="submenu-indicator"></div>
+                <mat-icon class="submenu-icon">{{subMenu.icon}}</mat-icon>
+                <span class="submenu-text">{{subMenu.text}}</span>
+              </div>
             </a>
-          </li>
-        }
-      </ul>
-    }
-  </span>
-}
+          }
+        </div>
+      }
+    </div>
+  }
 </mat-nav-list>

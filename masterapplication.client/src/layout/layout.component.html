@@ -1,19 +1,22 @@
-<mat-drawer-container>
-  <mat-drawer mode="side" [opened]="sideBarOpen">
-    <mat-toolbar>
-      <img class="logo" src="/logo.png" alt="Logo"> &nbsp;
-      <span class="brand-caption">Budget & Assets Tracker</span>
+<div class="coreui-app">
+  <aside class="coreui-sidebar" [class.collapsed]="!sideBarOpen">
+    <app-sidebar></app-sidebar>
+  </aside>
 
-    </mat-toolbar>
-    <hr/>
-    <app-sidebar (isloaded)="isLoaded($event)"></app-sidebar>
-  </mat-drawer>
-  <mat-drawer-content class="drawer-container">
-    <app-header (toggleSideBarForMe)="sideBarToggler()"></app-header>
-    <div class="content">
-      <!-- <ngx-spinner type="square-jelly-box" class="text-white">Loading...</ngx-spinner> -->
-      <router-outlet></router-outlet>
+  <div class="coreui-wrapper">
+    <app-header class="coreui-header" [class.collapsed]="!sideBarOpen" (toggleSideBarForMe)="sideBarToggler()">
+    </app-header>
+    <div class="breadcrumb-bar">
+      <div class="alert-marquee">
+        <span>{{ alertMessage }}</span>
+      </div>
     </div>
-  </mat-drawer-content>
+    <main class="coreui-content">
+      <!-- <ngx-spinner size="large" type="timer" [fullScreen]="true">
+        <p style="color: white"> Loading... </p>
+      </ngx-spinner> -->
+      <router-outlet></router-outlet>
+    </main>
 
-</mat-drawer-container>
+  </div>
+</div>

@@ -1,53 +1,100 @@
-/*
-html, body {
-  height: 100%;
-  margin: 0;
-}
-
-mat-drawer-container {
-  height: 100vh;
-  width: 100vw;
-  background: #f6f8fb;
-}
-.mat-drawer-content {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.drawer-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 100vh;
-}
-
-app-header {
-  flex-shrink: 0;
-  height: 64px;
-  background: #ffffff;
-  z-index: 1000;
-}
-
-.content {
-  flex: 1;
-  overflow: auto;
-  padding: 16px;
-  background: #f6f8fb;
-}
-
-
-router-outlet + * {
-  flex: 1;
-  display: block;
-}
-
-.content > * {
-  max-width: 1400px;
-  width: 100%;
-  margin: 0 auto;
-} */
-
-.logo{
+/* .logo{
   height: 50px;
+} */
+.breadcrumb-bar {
+  height: 40px;
+  background: #d8dbe0;
+  border-bottom: 1px solid #d8dbe0;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
 }
+.breadcrumb-bar .active {
+  font-weight: 600;
+}
+
+.alert-marquee {
+  white-space: nowrap;
+  display: inline-block;
+  padding-left: 100%;
+  animation: scroll-left 28s linear infinite;
+}
+
+.alert-marquee:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.coreui-app {
+  display: flex;
+  height: 100vh;
+  background: #f4f6f8;
+}
+
+.coreui-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+/* ===== Sidebar ===== */
+
+.coreui-sidebar {
+  width: 275px;
+  color: #cfd4da;
+  display: flex;
+  flex-direction: column;
+  background: rgb(255, 255, 255);
+  transition: all 0.3s ease;
+}
+
+.coreui-sidebar.collapsed {
+  width: 70px;
+}
+
+.coreui-sidebar.collapsed .nav-caption,
+.coreui-sidebar.collapsed .brand-caption {
+  display: none;
+}
+
+.coreui-sidebar.collapsed mat-icon {
+  margin: auto;
+}
+
+.coreui-sidebar mat-toolbar {
+  background: #d8dbe0;
+  color: #fff;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.coreui-sidebar .logo {
+  height: 32px;
+}
+
+.brand-caption {
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* Sidebar scrollbar */
+.coreui-sidebar ::-webkit-scrollbar {
+  width: 6px;
+}
+.coreui-sidebar ::-webkit-scrollbar-thumb {
+  background: #3a3f47;
+  border-radius: 3px;
+}
+
+

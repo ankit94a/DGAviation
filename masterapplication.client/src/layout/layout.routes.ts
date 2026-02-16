@@ -16,6 +16,10 @@ export const routes: Routes = [
         path: 'dashboard',
         loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
       },
+      {
+        path: 'registration',
+        loadComponent: () => import('./user-registration-details/registration-add/registration-add.component').then(m => m.RegistrationAddComponent),
+      },
     ]
   }
 ]

@@ -10,9 +10,9 @@
     ]
   },
   {
-    "text": "Priority Project (PPP)",
+    "text": "User Registration",
     "icon": "low_priority",
-    "routerLink": "/ppp",
+    "routerLink": "/registration",
     "permissionName": "PPP",
     "permissionAction": "ViewAll"
   },
