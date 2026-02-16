@@ -1,21 +1,28 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router, RouterStateSnapshot, ActivatedRouteSnapshot } from '@angular/router';
+import { CanActivate, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { AuthService } from '../service/auth.service';
-import { firstValueFrom } from 'rxjs';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private router: Router) {}
 
-  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
-    const isValid = await firstValueFrom(this.authService.checkIsValid());
-    if (isValid.isAuthenticated) {
-      return true; 
-    } else {
-      // this.router.navigate(['/landing'], { queryParams: { returnUrl: state.url } });
-      // this.router.navigate(['https://iam4.army.mil/IAM/username.html?resid']);
-      window.location.href = 'https://iam4.army.mil/';
-      return false;
+  constructor(private authService: AuthService,private router: Router){}
+
+  canActivate(): Observable<boolean> {
+    if (this.authService.isAuthenticated) {
+      return of(true);
     }
+    return this.authService.validate().pipe(
+      switchMap(isValid => {
+        if (!isValid) {
+          this.router.navigate(['/landing']);
+          return of(false);
+        }
+        return of(true);
+      })
+    );
   }
 }

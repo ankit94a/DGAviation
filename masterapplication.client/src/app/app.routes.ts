@@ -5,19 +5,19 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'login'
+    redirectTo: 'landing'
   },
   {
     path: 'landing',
     loadComponent: () =>
       import('../layout/landing/landing.component').then(m => m.LandingComponent),
-    //  canActivate: [AuthGuard],
   },
   {
     path: '',
+    canActivate: [AuthGuard],
     loadChildren: () =>
       import('../layout/layout.routes').then(m => m.routes),
-    //  canActivate: [AuthGuard],
+
   },
   {
     path: '**',

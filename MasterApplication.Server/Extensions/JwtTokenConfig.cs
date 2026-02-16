@@ -44,11 +44,19 @@ namespace MasterApplication.Server.Extensions
                                             {
                                                 //if (context.HttpContext.Request.Method.Equals("POST", StringComparison.OrdinalIgnoreCase))
                                                 //{
-                                                    var token = context.HttpContext.Request.Cookies["auth_token"];
-                                                    if (!string.IsNullOrEmpty(token))
-                                                    {
-                                                        context.Token = token;
-                                                    }
+                                                var endpoint = context.HttpContext.GetEndpoint();
+                                                var allowAnonymous = endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null;
+
+                                                if (allowAnonymous)
+                                                {
+                                                    context.NoResult();
+                                                    return Task.CompletedTask;
+                                                }
+                                                var token = context.HttpContext.Request.Cookies["auth_token"];
+                                                if (!string.IsNullOrEmpty(token))
+                                                {
+                                                    context.Token = token;
+                                                }
                                                 //}
                                                 //else
                                                 //{
@@ -62,10 +70,15 @@ namespace MasterApplication.Server.Extensions
                                             -------------------------- */
                                             OnTokenValidated = async context =>
                                             {
+                                                var endpoint = context.HttpContext.GetEndpoint();
+                                                var allowAnonymous = endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null;
+
+                                                if (allowAnonymous)
+                                                    return;
                                                 var claims = context.Principal;
 
-                                                var userIdClaim = claims?.FindFirst("UserId")?.Value;
-                                                var sessionIdClaim = claims?.FindFirst("SessionId")?.Value;
+                                                var userIdClaim = claims?.FindFirst("userid")?.Value;
+                                                var sessionIdClaim = claims?.FindFirst("sessionid")?.Value;
 
                                                 if (!long.TryParse(userIdClaim, out var userId) ||
                                                     !Guid.TryParse(sessionIdClaim, out var sessionId))
@@ -83,7 +96,7 @@ namespace MasterApplication.Server.Extensions
                                                 }
                                                 var userDb = context.HttpContext.RequestServices.GetRequiredService<IUserDB>();
 
-                                                var isValidSession = await userDb.ValidateUserSession(userId, sessionId,ipAddress,userAgent);
+                                                var isValidSession = await userDb.ValidateUserSession(userId, sessionId, ipAddress, userAgent);
 
                                                 if (!isValidSession)
                                                 {
@@ -113,6 +126,14 @@ namespace MasterApplication.Server.Extensions
                                             -------------------------- */
                                             OnChallenge = context =>
                                             {
+                                                var endpoint = context.HttpContext.GetEndpoint();
+                                                var allowAnonymous = endpoint?.Metadata?.GetMetadata<IAllowAnonymous>() != null;
+
+                                                if (allowAnonymous)
+                                                {
+                                                    context.HandleResponse();
+                                                    return Task.CompletedTask;
+                                                }
                                                 context.HandleResponse();
                                                 context.Response.StatusCode = StatusCodes.Status401Unauthorized;
                                                 context.Response.ContentType = "application/json";

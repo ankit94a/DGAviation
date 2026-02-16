@@ -11,13 +11,11 @@ export const routes: Routes = [
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',
-        //  canActivate: [AuthGuard],
       },
       {
         path: 'dashboard',
         loadComponent: () => import('./dashboard/dashboard.component').then(m => m.DashboardComponent),
-        //  canActivate: [AuthGuard],
-      }
+      },
     ]
   }
 ]

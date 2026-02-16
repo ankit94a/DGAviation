@@ -1,6 +1,7 @@
 using MasterApplication.DB.Implements;
 using MasterApplication.DB.Interface;
 using MasterApplication.DB.Services;
+using MasterApplication.Server.Authorization;
 using MasterApplication.Server.Extensions;
 using MasterApplication.Server.Filters;
 using MasterApplication.Server.IOC;
@@ -20,7 +21,7 @@ IoCConfiguration.Configuration(builder.Services);
 builder.Services.AddSingleton(builder.Configuration);
 builder.Services.AddSingleton<EncriptionService>();
 builder.Services.AddSingleton<LoginAttemptService>();
-builder.Services.AddScoped<IUserDB, UserDB>();
+builder.Services.AddSingleton<RSAKeyManager>();
 
 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
@@ -50,9 +51,9 @@ builder.Services.AddMvc(options =>
         new System.Text.Json.Serialization.JsonStringEnumConverter());
 });
 
-// ------------------------
-// JWT Authentication
-// ------------------------
+builder.Services.Configure<JwtConfig>(
+    builder.Configuration.GetSection("JwtConfig")
+);
 JwtTokenConfig.AddJwtTokenAuthentication(builder.Services, builder.Configuration);
 
 // ------------------------

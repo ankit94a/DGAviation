@@ -8,9 +8,9 @@ namespace MasterApplication.DB.Interface
     public interface IUserDB
     {
         public bool UpdatePassword(long id, string plainPassword);
-        public Task<UserDetails> GetUserByEmail(string userName);
+        public Task<UserDetails> GetUserByUserName(string userName);
         public Task<bool> UpsertUserSession(long userId,Guid sessionId, string ipAddress, string userAgent);
         public Task<bool> ValidateUserSession(long  userId,Guid sessionId,string ipAddress,string userAgent);
-        public Task<bool> DeleteUserSession(long userId,long sessionId);
+        public Task<bool> DeleteUserSession(long userId, Guid sessionId);
     }
 }

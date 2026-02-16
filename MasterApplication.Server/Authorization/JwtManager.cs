@@ -13,8 +13,6 @@ namespace MasterApplication.Server.Authorization
     {
         private readonly JwtConfig _jwtSettings;
 
-
-
         public JwtManager(IOptions<JwtConfig> jwtSettings)
         {
             _jwtSettings = jwtSettings.Value;
@@ -23,9 +21,7 @@ namespace MasterApplication.Server.Authorization
         {
 
             var jwtTokenHandler = new JwtSecurityTokenHandler();
-
             var key = Encoding.ASCII.GetBytes(_jwtSettings.Key);
-
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
@@ -33,7 +29,7 @@ namespace MasterApplication.Server.Authorization
                 {
                 new Claim(MasterConstant.SessionId,user.SessionId),
                 new Claim(MasterConstant.UserId, user.UserId.ToString()),
-                new Claim(MasterConstant.RoleType,user.RoleType), 
+                new Claim(MasterConstant.RoleType,user.RoleType),
                 new Claim(MasterConstant.Name,user.Name),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             }),
@@ -44,7 +40,6 @@ namespace MasterApplication.Server.Authorization
             };
             return jwtTokenHandler.WriteToken(jwtTokenHandler.CreateToken(tokenDescriptor));
         }
-
 
     }
 }

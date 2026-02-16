@@ -5,8 +5,10 @@ using MasterApplication.Server.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.RegularExpressions;
+using Microsoft.Extensions.Options;
+using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 namespace MasterApplication.Server.Controllers
 {
@@ -17,11 +19,15 @@ namespace MasterApplication.Server.Controllers
         private readonly IUserDB _userDB;
         private readonly LoginAttemptService _loginAttemptService;
         private readonly IJwtManager _jwtManager;
-        public AuthController(IUserDB userDB,LoginAttemptService loginAttemptService,IJwtManager jwtManager) 
+        private readonly JwtConfig _jwtSettings;
+        private readonly RSAKeyManager _rsa;
+        public AuthController(IUserDB userDB,LoginAttemptService loginAttemptService,IJwtManager jwtManager, IOptions<JwtConfig> jwtSettings, RSAKeyManager rsa) 
         {
             _userDB = userDB;
             _loginAttemptService = loginAttemptService;
             _jwtManager = jwtManager;
+            _jwtSettings = jwtSettings.Value;
+            _rsa = rsa;
         }
 
         [AllowAnonymous]
@@ -50,13 +56,12 @@ namespace MasterApplication.Server.Controllers
                 /* -------------------------
                    3. Rate limiting
                 -------------------------- */
+
                 if (_loginAttemptService.IsBlocked(ip))
                 {
                     return Unauthorized(new { message = "Too many failed login attempts. Please try again after 15 minutes." });
                 }
-                /* -------------------------
-                  4. Captcha validation
-               -------------------------- */
+
                 if (!ValidateCaptcha(login.Code, login.Token))
                 {
                     _loginAttemptService.RecordFailedAttempt(ip);
@@ -66,12 +71,13 @@ namespace MasterApplication.Server.Controllers
                 /* -------------------------
                    5. Decrypt credentials
                 -------------------------- */
-                var rsaService = new RSAKeyManager();
+
                 string decryptedUserName, decryptedPassword;
                 try
                 {
-                    decryptedUserName = rsaService.Decrypt(login.UserName);
-                    decryptedPassword = rsaService.Decrypt(login.Password);
+                    decryptedUserName = _rsa.Decrypt(login.UserName);
+                    decryptedPassword = _rsa.Decrypt(login.Password);
+
                 }
                 catch (Exception)
                 {
@@ -80,7 +86,8 @@ namespace MasterApplication.Server.Controllers
                 /* -------------------------
                    6. User lookup
                 -------------------------- */
-                var user = await _userDB.GetUserByEmail(decryptedUserName);
+
+                var user = await _userDB.GetUserByUserName(decryptedUserName);
 
                 if (user == null)
                 {
@@ -93,7 +100,9 @@ namespace MasterApplication.Server.Controllers
                 bool passwordValid;
                 try
                 {
+
                     passwordValid = BCrypt.Net.BCrypt.Verify(decryptedPassword, user.Password);
+
                 }
                 catch
                 {
@@ -123,19 +132,19 @@ namespace MasterApplication.Server.Controllers
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict,
-                    Expires = DateTimeOffset.UtcNow.AddMinutes(15)
+                    Expires = DateTimeOffset.UtcNow.AddMinutes(_jwtSettings.DurationInMinutes)
                 });
 
-                await _userDB.UpsertUserSession(user.Id, sessionId,ip,userAgent);
-                _loginAttemptService.ResetAttempts(ip);
-                
+                var sessionTask = _userDB.UpsertUserSession(user.Id, sessionId, ip, userAgent);
 
-                return Ok(new { msg = "Login successful." });
+                var resetTask = Task.Run(() => _loginAttemptService.ResetAttempts(ip));
+
+ 
+                return Ok(new { username = user.Name, role = user.RoleType });
             }
 
             catch (Exception ex)
             {
-                MasterLogger.Error(ex, "Error during login.");
                 return StatusCode(StatusCodes.Status500InternalServerError,
                     new { message = "An unexpected error occurred. Please try again later." });
             }
@@ -160,7 +169,7 @@ namespace MasterApplication.Server.Controllers
             {
                 return BadRequest("Password must be at least 8 characters long and contain uppercase, lowercase, number, and special character.");
             }
-            var user = await _userDB.GetUserByEmail(request.UserName);
+            var user = await _userDB.GetUserByUserName(request.UserName);
             if (user == null)
                 return NotFound(new { message = "User not found" });
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(request.Password, workFactor: 12);
@@ -209,5 +218,10 @@ namespace MasterApplication.Server.Controllers
             }
         }
 
+        [HttpGet, Route("isAuthenticated")]
+        public IActionResult Me()
+        {
+            return Ok(new { isAuthenticated = User?.Identity?.IsAuthenticated == true });
+        }
     }
 }

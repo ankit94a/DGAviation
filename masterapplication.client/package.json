@@ -23,6 +23,7 @@
     "@angular/platform-browser": "^21.0.4",
     "@angular/platform-browser-dynamic": "^21.0.4",
     "@angular/router": "^21.0.4",
+    "@coreui/coreui": "^5.5.0",
     "@microsoft/signalr": "^10.0.0",
     "@ng-select/ng-select": "^21.1.2",
     "ag-charts-angular": "^13.0.0",

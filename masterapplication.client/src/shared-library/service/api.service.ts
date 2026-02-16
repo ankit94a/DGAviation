@@ -1,11 +1,9 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, EMPTY, map, Observable, of, throwError } from 'rxjs';
+import { catchError, EMPTY, map, Observable, throwError } from 'rxjs';
 import { environment } from '../enviroments/environments.development';
 import { AbstractControl } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from './auth.service';
-import { LoginModel } from '../models/login.model';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -14,39 +12,19 @@ import { MatDialog } from '@angular/material/dialog';
 })
 export class ApiService {
   private baseUrl = environment.apiUrl;
-  constructor(private http: HttpClient,private toastr:ToastrService,private router: Router,private dailog:MatDialog) { }
+  constructor(private http: HttpClient, private toastr: ToastrService, private router: Router, private dailog: MatDialog) { }
 
   getWithHeaders(url: string): Observable<any> {
-
-    return this.http.get(`${this.baseUrl}`+ url).pipe(
-      map((res: any) => {
-        if (res) {
-          return res;
-        }
-      }),
+    return this.http.get(`${this.baseUrl}` + url, { withCredentials: true }).pipe(
+      map((res: any) => { if (res) { return res; } }),
       catchError((error) => {
         return this.showError(error);
       })
     );
   }
-    getWithHeadersForToken(url: string): Observable<any> {
 
-    return this.http.get(`https://dgisapp.army.mil:55102/Temporary_Listen_Addresses/${url}`).pipe(
-      map((res: any) => {
-        if (res) {
-          return res;
-        }
-      }),
-      catchError((error) => {
-        return this.showError(error);
-      })
-    );
-  }
-    postWithHeaderToDownload(url: string, data: any,): Observable<Blob> {
-    const options = {
-    responseType: 'blob' as 'json',
-    // withCredentials:true
-  };
+  postWithHeaderToDownload(url: string, data: any,): Observable<Blob> {
+    const options = { responseType: 'blob' as 'json', withCredentials: true };
     return this.http.post(`${this.baseUrl}${url}`, data, options).pipe(
       catchError((error: any) => {
         return this.showError(error);;
@@ -55,95 +33,64 @@ export class ApiService {
   }
 
   postWithHeader(url: string, Data: any): Observable<any> {
-    return this.http.post(`${this.baseUrl}`+ url, Data).pipe(map(
-      (res: any) => {
-        if (res) {
-          return res;
-        }
-      }), catchError(
+    return this.http.post(`${this.baseUrl}` + url, Data, { withCredentials: true }).pipe(map(
+      (res: any) => { if (res) { return res; } }),
+      catchError((error: any) => { return this.showError(error); }))
+  }
+
+  auth(data: any) {
+    return this.http.post<any>(`${this.baseUrl}` + 'auth/login', data).pipe(
+      catchError(
         (error: any) => {
           return this.showError(error);
-        }
-      ))
+        })
+    );
   }
-    postWithHeaderForToken(url: string, Data: any): Observable<any> {
-    return this.http.post('https://dgisapp.army.mil:55102/Temporary_Listen_Addresses/' + url, Data,{
-      // withCredentials:true
-    }).pipe(map(
-      (res: any) => {
 
-        if (res) {
-          return res;
-        }
-      }), catchError(
-        (error: any) => {
-
-          return this.showError(error);
-        }
-      ))
-  }
-  clear() {
-    sessionStorage.clear();
-
-  }
-  public navigateToLogin(stateUrl) {
-    this.router.navigate(['/landing'], { queryParams: { 1: { returnUrl: stateUrl } } });
-  }
-    public setWingDetails(wing: { id: string; name: string }) {
-    sessionStorage.setItem('wingId', wing.id);
-    sessionStorage.setItem('wing', wing.name);
-  }
-   public clearWingDetails() {
-    sessionStorage.removeItem('wingId');
-    sessionStorage.removeItem('wing');
-  }
- onLoggedout() {
-    this.clear()
-    this.clearWingDetails();
-    this.getWithHeaders('auth/logout').subscribe(res => {
-       const url = `https://iam4.army.mil/IAM/singleAppLogout/?SAMLRequest=${res.isSuccesLoggout}`;
-       window.location.href = url;
-       if(res.isSuccesLoggout){
-        this.router.navigate(['/log-out'])
-       }
+  onLoggedout() {
+    this.postWithHeader('auth/logout',null).subscribe(res => {
+      // const url = `https://iam4.army.mil/IAM/singleAppLogout/?SAMLRequest=${res.isSuccesLoggout}`;
+      // window.location.href = url;
+      // if (res.isSuccesLoggout) {
+      //   this.router.navigate(['/log-out'])
+      // }
     })
-
   }
+
   public showError(error: any): Observable<any> {
-    console.log("errr",error)
     let message = 'An unknown error occurred';
-       if (error.error.status === 455) {
-    message =
-      error.error?.message || error.error?.title || 'Unauthorized access';
-        this.onLoggedout();
-    return throwError(() => ({
-      status: 455,
-      error: {
-        message
-      }
-    }));
-  }else if(error.status == 403 || error.status == 401){
+    if (error.error.status === 455) {
+      message =
+        error.error?.message || error.error?.title || 'Unauthorized access';
+      this.onLoggedout();
+      return throwError(() => ({
+        status: 455,
+        error: {
+          message
+        }
+      }));
+    } else if (error.status == 403 || error.status == 401) {
 
       message =
-      error.error?.message || error.error?.title || error.error.errorMessage;
+        error.error?.message || error.error?.title || error.error.errorMessage;
       this.onLoggedout();
-     return throwError(() => ({
-      status: 403,
-      error: {
-        message
-      }
-    }));
-  }else if(error.status ==400){
-    return throwError(()=>error)
-  }
-      else if (error.error != null && (typeof error.error === 'object' || error.constructor == Object)) {
-        this.toastr.error(error.error.title.toString(), "error");
-        return throwError(() => error);
-      }
+      return throwError(() => ({
+        status: 403,
+        error: {
+          message
+        }
+      }));
+    } else if (error.status == 400) {
+      return throwError(() => error)
+    }
+    else if (error.error != null && (typeof error.error === 'object' || error.constructor == Object)) {
+      this.toastr.error(error.error.title.toString(), "error");
+      return throwError(() => error);
+    }
     return EMPTY;
   }
 
-  checkRequiredFieldsExceptEmerFile(form,fileType): boolean {
+  checkRequiredFieldsExceptFile(form, fileType): boolean {
     const controls = form.controls;
     for (const key in controls) {
       if (key === fileType) continue;
@@ -157,27 +104,4 @@ export class ApiService {
     return true;
   }
 
-  postForChatBot(query:string,collection_name:string,topK:number=1):Observable<any>{
-    const url = `https://dgis.army.mil/chatbot/asdcask/`;
-    const payload = {
-      query:query,
-      collection_name:collection_name,
-      top_k:topK
-    }
-    return this.http.post(url,payload,{
-      headers:{"Content-Type":"application/json"}
-    }).pipe(map((res : any) =>res),
-  catchError((error:any) => this.showError(error)))
-  }
-   getForChatBot(query:string,collection_name:string):Observable<any>{
-    const url = `https://dgis.army.mil/chatbot/search/?collection_name=${collection_name}&q=${query}`;
-    return this.http.get(url).pipe(map((res : any) =>res),
-  catchError((error:any) => this.showError(error)))
-  }
-
-   getForIAM(SAMLRequest:any):Observable<any>{
-    const url = `https://iam4.army.mil/IAM/singleAppLogout/?SAMLRequest=${SAMLRequest}`;
-    return this.http.get(url).pipe(map((res : any) =>res),
-  catchError((error:any) => this.showError(error)))
-  }
 }

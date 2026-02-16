@@ -102,7 +102,7 @@ drawCaptcha(text: string) {
           token:this.loginform.get('token')?.value,
         };
 
-        this.apiService.postWithHeader('auth/login', encryptedPayload).subscribe({
+        this.apiService.auth(encryptedPayload).subscribe({
           next: (res: any) => {
             if (res) {
               // this.authService.setRoleType()
