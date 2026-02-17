@@ -11,7 +11,7 @@
   },
   {
     "text": "User Registration",
-    "icon": "low_priority",
+    "icon": "person_add",
     "routerLink": "/registration",
     "permissionName": "PPP",
     "permissionAction": "ViewAll"
