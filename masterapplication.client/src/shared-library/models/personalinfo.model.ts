@@ -28,3 +28,14 @@ export class LastThreeAAAS extends BaseModel{
   ro: string;
   sro: string;
 }
+
+export class AaaDetails extends BaseModel{
+  personalInfoId: number;
+  date: Date | string;
+  acNoAndType: string;
+  unitOrLOC: string;
+  blamworthy: string;
+  cause: string;
+  statusPunish: string;
+}
+

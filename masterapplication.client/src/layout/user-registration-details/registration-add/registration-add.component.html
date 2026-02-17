@@ -2,7 +2,7 @@
   <mat-card-content>
     <mat-stepper class="demo-stepper" #stepper>
       <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
+        <form [formGroup]="firstFormGroup" (ngSubmit)="savePersonalDetails()">
           <ng-template matStepLabel>Personal Information</ng-template>
 
           <div class="container-fluid">
@@ -49,10 +49,19 @@
                 </div>
                 <div class="row">
                   <div class="col-md-6 mb-3">
-                    <mat-form-field appearance="fill" class="w-100">
+                    <!-- <mat-form-field appearance="fill" class="w-100">
                       <mat-label>Reporting Period</mat-label>
                       <input matInput formControlName="reportingPeriod" placeholder="e.g., Q1 2024">
-                    </mat-form-field>
+                    </mat-form-field> -->
+
+                    <ng-select [items]="YearList | enumList:'desc'" bindLabel="value" bindValue="value"
+                      placeholder="Financial Year *" formControlName="reportingPeriod"
+                      [class.is-invalid]="firstFormGroup.get('reportingPeriod')?.touched && firstFormGroup.get('reportingPeriod')?.invalid">
+                    </ng-select>
+                    <mat-error class="custom-font"
+                      *ngIf="firstFormGroup.get('reportingPeriod')?.touched && firstFormGroup.get('reportingPeriod')?.hasError('required')">
+                      Financial Year is required
+                    </mat-error>
                   </div>
 
                   <div class="col-md-6 mb-3">
@@ -193,7 +202,7 @@
             </div>
 
             <div class="form-actions text-end mt-4">
-              <button mat-raised-button color="primary" matStepperNext [disabled]="!firstFormGroup.valid">
+              <button mat-raised-button color="primary" matStepperNext [disabled]="!firstFormGroup.valid" type="submit">
                 <mat-icon>arrow_forward</mat-icon>
                 Save & Continue
               </button>
@@ -208,8 +217,8 @@
         <form [formGroup]="secondFormGroup">
 
           <div formArrayName="lastThreeAAAS">
-
-            <table mat-table [dataSource]="lastThreeAAAS.controls" class="mat-elevation-z2 w-100">
+            <mat-label>Detail Of Last Three AAAS</mat-label>
+            <table mat-table [dataSource]="lastThreeAAAS.controls" class="mat-elevation-z2 w-100 mt-2">
 
               <!-- Index -->
               <ng-container matColumnDef="index">
@@ -237,13 +246,10 @@
                 <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
 
                   <mat-form-field appearance="fill" class="w-100">
-  <input matInput
-         [matDatepicker]="picker"
-         formControlName="from"
-         placeholder="Select Date">
-  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-</mat-form-field>
+                    <input matInput [matDatepicker]="picker" formControlName="from" placeholder="Select Date">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
 
 
                 </td>
@@ -255,13 +261,10 @@
                 <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
 
                   <mat-form-field appearance="fill" class="w-100">
-  <input matInput
-         [matDatepicker]="picker"
-         formControlName="from"
-         placeholder="Select Date">
-  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker></mat-datepicker>
-</mat-form-field>
+                    <input matInput [matDatepicker]="picker" formControlName="from" placeholder="Select Date">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
 
 
                 </td>
@@ -307,16 +310,96 @@
               <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
             </table>
-
           </div>
+          <br>
+          <div formArrayName="accidentDetails">
+            <mat-label class="mb-2">Accident Details (Entire Service)</mat-label>
+            <table mat-table [dataSource]="accidentDetails.controls" class="mat-elevation-z2 w-100 mt-2">
 
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput [matDatepicker]="picker" formControlName="date" placeholder="Select Date">
+                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+              <ng-container matColumnDef="acNoAndType">
+                <th mat-header-cell *matHeaderCellDef>Ac No And Type</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="acNoAndType" placeholder="Account No and Type">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="unitOrLOC">
+                <th mat-header-cell *matHeaderCellDef>Unit / LOC</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="unitOrLOC" placeholder="Unit / LOC">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+
+              <ng-container matColumnDef="blamworthy">
+                <th mat-header-cell *matHeaderCellDef>Blame Worthy</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  No
+                  <mat-slide-toggle formControlName="blamworthy">
+                    Yes
+                  </mat-slide-toggle>
+
+
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="cause">
+                <th mat-header-cell *matHeaderCellDef>Cause</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="cause" placeholder="Cause">
+                  </mat-form-field>
+
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="statusPunish">
+                <th mat-header-cell *matHeaderCellDef>Status Incl Punishment Awarded</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="statusPunish" placeholder="Status Incl Punishment Awarded">
+                  </mat-form-field>
+
+                </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+
+            </table>
+          </div>
           <div class="mt-3 d-flex justify-content-between">
             <button mat-stroked-button color="primary" matStepperPrevious>
               Back
             </button>
 
             <button mat-raised-button color="primary" matStepperNext [disabled]="secondFormGroup.invalid">
-              Next
+              <mat-icon>arrow_forward</mat-icon>
+              Save & Continue
             </button>
           </div>
 
