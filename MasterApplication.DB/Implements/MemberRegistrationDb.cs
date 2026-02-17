@@ -2,9 +2,11 @@
 using MasterApplication.DB.Interface;
 using MasterApplication.DB.Models;
 using MasterApplication.DB.Services;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace MasterApplication.DB.Implements
@@ -199,96 +201,225 @@ namespace MasterApplication.DB.Implements
             }
         }
 
+        //public async Task<bool> SaveAAAAndAccident(AAAAndAccidentRequest request)
+        //{
+        //    try
+        //    {
+        //        if (connection.State == System.Data.ConnectionState.Closed)
+        //            await connection.OpenAsync();
+
+        //        using var transaction = connection.BeginTransaction();
+        //        var query = "";
+        //    }catch(Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        public async Task<bool> SaveAAAAndAccident(AAAAndAccidentRequest request)
+        {
+            try
+            {
+                if (connection.State == ConnectionState.Closed)
+                    await connection.OpenAsync();
+
+                using var transaction = connection.BeginTransaction();
+
+                try
+                {
+                    var now = DateTime.Now;
+
+                    // 🔹 Prepare AAA Data
+                    foreach (var aaa in request.LastThreeAAAS)
+                    {
+                        aaa.CreatedBy = 1;
+                        aaa.CreatedOn = now;
+                        aaa.IsActive = true;
+                        aaa.IsDeleted = false;
+                    }
+
+                    // 🔹 Prepare Accident Data
+                    foreach (var accident in request.AccidentDetails)
+                    {
+                        accident.CreatedBy = 1;
+                        accident.CreatedOn = now;
+                        accident.IsActive = true;
+                        accident.IsDeleted = false;
+                    }
+
+                    // 🔥 Query 1 – LastThreeAAAS
+                    var aaaQuery = @"
+            INSERT INTO LastThreeAAAS
+            (
+                personalInfoId,
+                type,
+                [from],
+                [to],
+                io,
+                ro,
+                sro,
+                createdby,
+                createdon,
+                isactive,
+                isdeleted
+            )
+            VALUES
+            (
+                @PersonalInfoId,
+                @Type,
+                @From,
+                @To,
+                @IO,
+                @RO,
+                @SRO,
+                @CreatedBy,
+                @CreatedOn,
+                @IsActive,
+                @IsDeleted
+            )";
+
+                    // 🔥 Query 2 – AccidentDetails
+                    var accidentQuery = @"
+            INSERT INTO AccidentDetails
+            (
+                personalInfoId,
+                dt,
+                acNoAndType,
+                unitOrLOC,
+                blamworthy,
+                cause,
+                statusPunish,
+                createdby,
+                createdon,
+                isactive,
+                isdeleted
+            )
+            VALUES
+            (
+                @PersonalInfoId,
+                @Dt,
+                @AcNoAndType,
+                @UnitOrLOC,
+                @Blamworthy,
+                @Cause,
+                @StatusPunish,
+                @CreatedBy,
+                @CreatedOn,
+                @IsActive,
+                @IsDeleted
+            )";
+
+                    // 🔹 Bulk insert using Dapper
+                    await connection.ExecuteAsync(aaaQuery, request.LastThreeAAAS, transaction);
+                    await connection.ExecuteAsync(accidentQuery, request.AccidentDetails, transaction);
+
+                    transaction.Commit();
+                    return true;
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    throw;
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         //LastThreeAAAS
-        public bool AddLastThreeAAAS(LastThreeAAAS lastThreeAAAS)
-        {
-            try
-            {
-                string query = @"
-        INSERT INTO LastThreeAAAS
-        (
-            personalInfoId,
-            type,
-            [from],
-            [to],
-            io,
-            ro,
-            sro,
-            createdby,
-            createdon,
-            isactive,
-            isdeleted
-        )
-        VALUES
-        (
-            @PersonalInfoId,
-            @Type,
-            @From,
-            @To,
-            @IO,
-            @RO,
-            @SRO,
-            @CreatedBy,
-            @CreatedOn,
-            @IsActive,
-            @IsDeleted
-        )";
+        //public bool AddLastThreeAAAS(LastThreeAAAS lastThreeAAAS)
+        //{
+        //    try
+        //    {
+        //        string query = @"
+        //INSERT INTO LastThreeAAAS
+        //(
+        //    personalInfoId,
+        //    type,
+        //    [from],
+        //    [to],
+        //    io,
+        //    ro,
+        //    sro,
+        //    createdby,
+        //    createdon,
+        //    isactive,
+        //    isdeleted
+        //)
+        //VALUES
+        //(
+        //    @PersonalInfoId,
+        //    @Type,
+        //    @From,
+        //    @To,
+        //    @IO,
+        //    @RO,
+        //    @SRO,
+        //    @CreatedBy,
+        //    @CreatedOn,
+        //    @IsActive,
+        //    @IsDeleted
+        //)";
 
-                var result = connection.Execute(query, lastThreeAAAS);
-                return result > 0;
-            }
-            catch (Exception ex)
-            {
-                MasterLogger.Error(ex, "Class=LastThreeAAASDb,method=AddLastThreeAAAS");
-                throw;
-            }
-        }
-        //AccidentDetails
-        public bool AddAccidentDetails(AccidentDetails accidentDetails)
-        {
-            try
-            {
-                string query = @"
-        INSERT INTO AccidentDetails
-        (
-            personalInfoId,
-            dt,
-            acNoAndType,
-            unitOrLOC,
-            blamworthy,
-            cause,
-            statusPunish,
-            createdby,
-            createdon,
-            isactive,
-            isdeleted
-        )
-        VALUES
-        (
-            @PersonalInfoId,
-            @Dt,
-            @AcNoAndType,
-            @UnitOrLOC,
-            @Blamworthy,
-            @Cause,
-            @StatusPunish,
-            @CreatedBy,
-            @CreatedOn,
-            @IsActive,
-            @IsDeleted
-        )";
+        //        var result = connection.Execute(query, lastThreeAAAS);
+        //        return result > 0;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MasterLogger.Error(ex, "Class=LastThreeAAASDb,method=AddLastThreeAAAS");
+        //        throw;
+        //    }
+        //}
+        ////AccidentDetails
+        //public bool AddAccidentDetails(AccidentDetails accidentDetails)
+        //{
+        //    try
+        //    {
+        //        string query = @"
+        //INSERT INTO AccidentDetails
+        //(
+        //    personalInfoId,
+        //    dt,
+        //    acNoAndType,
+        //    unitOrLOC,
+        //    blamworthy,
+        //    cause,
+        //    statusPunish,
+        //    createdby,
+        //    createdon,
+        //    isactive,
+        //    isdeleted
+        //)
+        //VALUES
+        //(
+        //    @PersonalInfoId,
+        //    @Dt,
+        //    @AcNoAndType,
+        //    @UnitOrLOC,
+        //    @Blamworthy,
+        //    @Cause,
+        //    @StatusPunish,
+        //    @CreatedBy,
+        //    @CreatedOn,
+        //    @IsActive,
+        //    @IsDeleted
+        //)";
 
 
 
-                var result = connection.Execute(query, accidentDetails);
-                return result > 0;
-            }
-            catch (Exception ex)
-            {
-                MasterLogger.Error(ex, "Class=AccidentDetailsDb,method=AddAccidentDetails");
-                throw;
-            }
-        }
+        //        var result = connection.Execute(query, accidentDetails);
+        //        return result > 0;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        MasterLogger.Error(ex, "Class=AccidentDetailsDb,method=AddAccidentDetails");
+        //        throw;
+        //    }
+        //}
+
+
 
         //AdvExecRptRaised
         public bool AddAdvExecRptRaised(AdvExecRptRaised advExecRptRaised)

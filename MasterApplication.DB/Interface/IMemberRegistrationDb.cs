@@ -1,4 +1,5 @@
 ﻿using MasterApplication.DB.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,11 +15,13 @@ namespace MasterApplication.DB.Interface
         public PersonalInfo GetPersonalInfoById(int id);
 
         //LastThreeAAAS
-        public bool AddLastThreeAAAS(LastThreeAAAS lastThreeAAAS);
+        //public bool AddLastThreeAAAS(LastThreeAAAS lastThreeAAAS);
 
-        //AccidentDetails
+        ////AccidentDetails
 
-        public bool AddAccidentDetails(AccidentDetails accidentDetails);
+        //public bool AddAccidentDetails(AccidentDetails accidentDetails);
+        public Task<bool> SaveAAAAndAccident(AAAAndAccidentRequest request);
+
         //Advverse Executive Report Raised
         public bool AddAdvExecRptRaised(AdvExecRptRaised advExecRptRaised);
         //PhysService

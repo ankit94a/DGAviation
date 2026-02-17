@@ -62,7 +62,7 @@ namespace MasterApplication.DB.Models
     {
         public long? PersonalInfoId { get; set; }
 
-        public string Dt { get; set; } = null!;
+        public DateTime? Dt { get; set; }
 
         public string AcNoAndType { get; set; } = null!;
 
@@ -74,6 +74,12 @@ namespace MasterApplication.DB.Models
 
         public string StatusPunish { get; set; }
     }
+    public class AAAAndAccidentRequest
+    {
+        public List<LastThreeAAAS> LastThreeAAAS { get; set; }
+        public List<AccidentDetails> AccidentDetails { get; set; }
+    }
+
     public class AdvExecRptRaised : BaseModel
     {
         public long? PersonalInfoId { get; set; }

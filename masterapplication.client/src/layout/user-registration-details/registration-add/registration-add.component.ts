@@ -25,6 +25,7 @@ export class RegistrationAddComponent extends EnumBase implements OnInit {
   selectedFile: File | null = null;
   checked: boolean = true;
   apiUrl: string = 'registration/personalinfo'
+  apiUrl2: string = 'registration/SaveAAAAndAccident'
   constructor() {
     super();
   }
@@ -35,11 +36,8 @@ export class RegistrationAddComponent extends EnumBase implements OnInit {
       return;
     }
 
-    const formData = new FormData();
+  const formData = new FormData();
   const formValue = this.firstFormGroup.value;
-
-
-
     Object.keys(this.firstFormGroup.value).forEach(key => {
       let value = formValue[key];
 
@@ -65,6 +63,64 @@ export class RegistrationAddComponent extends EnumBase implements OnInit {
       }
     })
   }
+
+  saveStepSecond() {
+
+  if (this.secondFormGroup.invalid) {
+    this.secondFormGroup.markAllAsTouched();
+    return;
+  }
+
+  const payload = {
+    lastThreeAAAS: this.secondFormGroup.value.lastThreeAAAS.map(x => ({
+      ...x,
+      from: x.from ? new Date(x.from).toISOString() : null,
+      to: x.to ? new Date(x.to).toISOString() : null
+    })),
+    accidentDetails: this.secondFormGroup.value.accidentDetails.map(x => ({
+      ...x,
+      date: x.date ? new Date(x.date).toISOString() : null
+    }))
+  };
+
+   this.apiService.postWithHeader(this.apiUrl2, payload)
+    .subscribe(res => {
+      this.toastr.success("Detail Successfully Saved", "Success");
+    });
+}
+
+  // saveStepSecond(){
+  //   debugger
+  //    if (this.secondFormGroup.invalid) {
+  //     this.secondFormGroup.markAllAsTouched();
+  //     this.toastr.error('Please fill all required fields', 'Validation Error');
+  //     return;
+  //    }
+  // const formDataSecond = new FormData();
+  // const formValue = this.secondFormGroup.value;
+
+  //   Object.keys(this.secondFormGroup.value).forEach(key => {
+  //     let value = formValue[key];
+
+  // // Convert specific date fields
+  // if (
+  //    (key === 'From' ||
+  //      key === 'To' ||
+  //      key === 'dt') 
+  //     && value
+  //    ) {
+  //   value = new Date(value).toISOString();
+  // }
+
+  // formDataSecond.append(key, value);
+  //     formDataSecond.append(key, this.secondFormGroup.value[key]);
+  //   });
+  //    this.apiService.postWithHeader(this.apiUrl, formDataSecond).subscribe(res => {
+  //     if (res) {
+  //       this.toastr.success("Detail Successfully Saved", 'success');
+  //     }
+  //   })
+  // }
   ngOnInit(): void {
     this.initializeForm();
     this.secondFormGroup = this._formBuilder.group({
