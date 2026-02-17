@@ -26,7 +26,7 @@ namespace MasterApplication.Server.Controllers
             personalInfo.IsDeleted = false;
             personalInfo.IsActive = true;
 
-            //image 
+            //image //
 
             //personalInfo = _encriptionService.EncryptModel(personalInfo);
             return Ok(_memberRegistrationDb.AddPersonalInfo(personalInfo));

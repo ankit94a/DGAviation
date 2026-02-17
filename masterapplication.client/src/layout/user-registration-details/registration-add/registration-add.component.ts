@@ -36,8 +36,24 @@ export class RegistrationAddComponent extends EnumBase implements OnInit {
     }
 
     const formData = new FormData();
+  const formValue = this.firstFormGroup.value;
+
+
 
     Object.keys(this.firstFormGroup.value).forEach(key => {
+      let value = formValue[key];
+
+  // Convert specific date fields
+  if (
+      (key === 'tosDate' ||
+       key === 'dtOfCommission' ||
+       key === 'dtOfSeniority') 
+      && value
+     ) {
+    value = new Date(value).toISOString();
+  }
+
+  formData.append(key, value);
       formData.append(key, this.firstFormGroup.value[key]);
     });
     if (this.selectedFile) {
