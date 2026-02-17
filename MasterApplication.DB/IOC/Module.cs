@@ -16,8 +16,9 @@ namespace MasterApplication.DB.IOC
 			{
 				{typeof(IAttributeDB), typeof(AttributeDb) },
                 {typeof(IUserDB), typeof(UserDB) },
+                 {typeof(IMemberRegistrationDb), typeof(MemberRegistrationDb) },
 
-			};
+            };
 			return dic;
 		}
 	}
