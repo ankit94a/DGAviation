@@ -1,1 +1,338 @@
-<p>registration-add works!</p>
+<mat-card>
+  <mat-card-content>
+    <mat-stepper class="demo-stepper" #stepper>
+      <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+          <ng-template matStepLabel>Personal Information</ng-template>
+
+          <div class="container-fluid">
+
+            <div class="row">
+              <div class="col-md-9 px-0">
+                <div class="row">
+                  <div class="col-md-2">
+                    <mat-slide-toggle formControlName="isNewRegistration">
+                      New Registration
+                    </mat-slide-toggle>
+                  </div>
+
+
+                  <div class="col-md-4 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                      <mat-label>IC Number</mat-label>
+
+                      <input matInput formControlName="icNumber" placeholder="Enter IC Number">
+
+                      <button mat-icon-button matSuffix type="button" matTooltip="get previous form details"
+                        [disabled]="firstFormGroup.get('isNewRegistration')?.value">
+                        <mat-icon>
+                          {{ firstFormGroup.get('isNewRegistration')?.value ? 'lock' : 'lock_open' }}
+                        </mat-icon>
+
+                      </button>
+
+                      <mat-error *ngIf="firstFormGroup.get('icNumber')?.hasError('required')">
+                        IC Number is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                      <mat-label>Name</mat-label>
+                      <input matInput formControlName="name" placeholder="Enter full name">
+                      <mat-error *ngIf="firstFormGroup.get('name')?.hasError('required')">
+                        Name is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                      <mat-label>Reporting Period</mat-label>
+                      <input matInput formControlName="reportingPeriod" placeholder="e.g., Q1 2024">
+                    </mat-form-field>
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <mat-form-field appearance="fill" class="w-100">
+                      <mat-label>Unit</mat-label>
+                      <input matInput formControlName="unit" placeholder="Enter unit">
+                      <mat-error *ngIf="firstFormGroup.get('unit')?.hasError('required')">
+                        Unit is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-3">
+                <div class="image-frame-container">
+                  <div class="image-frame" [class.has-image]="imagePreview">
+
+                    <div class="image-preview" *ngIf="imagePreview">
+                      <img [src]="imagePreview" alt="Profile Photo" class="preview-img">
+                      <div class="image-overlay">
+                        <button mat-icon-button color="primary" (click)="fileInput.click()" type="button">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button mat-icon-button color="warn" (click)="removeImage()" type="button">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="image-placeholder" *ngIf="!imagePreview" (click)="fileInput.click()">
+                      <mat-icon class="upload-icon">add_a_photo</mat-icon>
+                      <span class="upload-text">Upload Photo</span>
+                      <span class="upload-hint">Click to browse</span>
+                      <span class="upload-hint">Max size: 5MB. Format: JPG, PNG</span>
+                    </div>
+                    <input type="file" accept="image/*" (change)="onImageUpload($event)" hidden #fileInput>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Command (COMD)</mat-label>
+                  <input matInput formControlName="comd" placeholder="Enter command">
+                  <mat-error *ngIf="firstFormGroup.get('comd')?.hasError('required')">
+                    Command is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Type Of Report</mat-label>
+                  <input matInput formControlName="typeOfReport" placeholder="Enter report type">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Parent Arm</mat-label>
+                  <input matInput formControlName="parentArm" placeholder="Enter parent arm">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Appointment Held</mat-label>
+                  <input matInput formControlName="apptHeld" placeholder="Enter appointment">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Date of Commission</mat-label>
+                  <input matInput [matDatepicker]="picker1" formControlName="dtOfCommission">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Medical Category</mat-label>
+                  <input matInput formControlName="medCategory" placeholder="Enter medical category">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Date of Seniority</mat-label>
+                  <input matInput [matDatepicker]="picker2" formControlName="dtOfSeniority">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Category</mat-label>
+                  <input matInput formControlName="category" placeholder="Enter category">
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Award of Wings</mat-label>
+                  <input matInput formControlName="awardOfWings" placeholder="Enter award details">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Instructor Category</mat-label>
+                  <input matInput formControlName="instrCategory" placeholder="Enter instructor category">
+                </mat-form-field>
+              </div>
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>TOS Date</mat-label>
+                  <input matInput [matDatepicker]="picker3" formControlName="tosDate">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+              <div class="col-md-4 mb-3">
+                <mat-form-field appearance="fill" class="w-100">
+                  <mat-label>Last Appeared with GEB/CEB</mat-label>
+                  <input matInput formControlName="lastAppearedWithGebCeb" placeholder="Enter details">
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="form-actions text-end mt-4">
+              <button mat-raised-button color="primary" matStepperNext [disabled]="!firstFormGroup.valid">
+                <mat-icon>arrow_forward</mat-icon>
+                Save & Continue
+              </button>
+            </div>
+          </div>
+        </form>
+      </mat-step>
+
+
+
+      <mat-step [stepControl]="secondFormGroup" label="AAA Details">
+        <form [formGroup]="secondFormGroup">
+
+          <div formArrayName="lastThreeAAAS">
+
+            <table mat-table [dataSource]="lastThreeAAAS.controls" class="mat-elevation-z2 w-100">
+
+              <!-- Index -->
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <!-- Type -->
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Type</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="type" placeholder="Enter Type">
+                  </mat-form-field>
+
+                </td>
+              </ng-container>
+
+              <!-- From Date -->
+              <ng-container matColumnDef="from">
+                <th mat-header-cell *matHeaderCellDef>From</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+
+                  <mat-form-field appearance="fill" class="w-100">
+  <input matInput
+         [matDatepicker]="picker"
+         formControlName="from"
+         placeholder="Select Date">
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+
+                </td>
+              </ng-container>
+
+              <!-- To Date -->
+              <ng-container matColumnDef="to">
+                <th mat-header-cell *matHeaderCellDef>To</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+
+                  <mat-form-field appearance="fill" class="w-100">
+  <input matInput
+         [matDatepicker]="picker"
+         formControlName="from"
+         placeholder="Select Date">
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+
+
+                </td>
+              </ng-container>
+
+              <!-- IO -->
+              <ng-container matColumnDef="io">
+                <th mat-header-cell *matHeaderCellDef>IO</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="io">
+                  </mat-form-field>
+
+                </td>
+              </ng-container>
+
+              <!-- RO -->
+              <ng-container matColumnDef="ro">
+                <th mat-header-cell *matHeaderCellDef>RO</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="ro">
+                  </mat-form-field>
+
+                </td>
+              </ng-container>
+
+              <!-- SRO -->
+              <ng-container matColumnDef="sro">
+                <th mat-header-cell *matHeaderCellDef>SRO</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="sro">
+                  </mat-form-field>
+
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            </table>
+
+          </div>
+
+          <div class="mt-3 d-flex justify-content-between">
+            <button mat-stroked-button color="primary" matStepperPrevious>
+              Back
+            </button>
+
+            <button mat-raised-button color="primary" matStepperNext [disabled]="secondFormGroup.invalid">
+              Next
+            </button>
+          </div>
+
+        </form>
+      </mat-step>
+
+
+
+      <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        <p>You are now done.</p>
+        <div>
+          <button matButton matStepperPrevious>Back</button>
+          <button matButton (click)="stepper.reset()">Reset</button>
+        </div>
+      </mat-step>
+    </mat-stepper>
+  </mat-card-content>
+</mat-card>

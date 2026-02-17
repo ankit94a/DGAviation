@@ -9,7 +9,7 @@
 
 /* BRAND */
 .sidebar-brand {
-  padding: 18px 20px;
+  padding: 10px 20px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
 }
 
@@ -19,9 +19,9 @@
   gap: 10px;
 }
 
-.brand-logo mat-icon {
-  font-size: 26px;
-  color: #fbbf24; /* gold accent */
+.brand-logo img {
+  height: 42px;
+  color: #fbbf24;
 }
 
 .brand-text {

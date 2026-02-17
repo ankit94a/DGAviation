@@ -17,6 +17,14 @@ export class PersonalInfo extends BaseModel {
   tosDate: Date;
   lastAppearedWithGebCeb: string;
   imgUrl: string;
-  roleId: number;
-  roleType: number;
+}
+
+export class LastThreeAAAS extends BaseModel{
+  personalInfoId: number;
+  type: string;
+  from: Date | string;
+  to: Date | string;
+  io: string;
+  ro: string;
+  sro: string;
 }
