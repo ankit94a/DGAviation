@@ -25,6 +25,7 @@ namespace MasterApplication.DB.Implements
         INSERT INTO PersonalInfo
         (
             name,
+            IcNumber ,
             reportingPeriod,
             unit,
             comd,
@@ -48,6 +49,7 @@ namespace MasterApplication.DB.Implements
         VALUES
         (
             @Name,
+            @IcNumber, 
             @ReportingPeriod,
             @Unit,
             @Comd,
