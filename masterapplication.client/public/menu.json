@@ -10,16 +10,58 @@
     ]
   },
   {
-    "text": "User Registration",
+    "text": "New Registration",
     "icon": "person_add",
     "routerLink": "/registration",
     "permissionName": "PPP",
     "permissionAction": "ViewAll"
   },
   {
+    "text": "Candidate List",
+    "icon": "groups",
+    "routerLink": "/candidateList",
+    "permissionName": "PPP",
+    "permissionAction": "ViewAll"
+  },
+  {
+    "text": "Performance Report",
+    "icon": "assessment",
+    "routerLink": "/under-construction",
+    "permissionName": "PPP",
+    "permissionAction": "ViewAll"
+  },
+  {
+    "text": "Army Aviation Performance Form",
+    "icon": "flight",
+    "routerLink": "/under-construction",
+    "permissionName": "PPP",
+    "permissionAction": "ViewAll"
+  },
+  {
+    "text": "Pen Picture Form",
+    "icon": "description",
+    "routerLink": "/under-construction",
+    "permissionName": "PPP",
+    "permissionAction": "ViewAll"
+  },
+  {
+    "text": "Record of Annual Assessment of Aviators",
+    "icon": "fact_check",
+    "routerLink": "/under-construction",
+    "permissionName": "PPP",
+    "permissionAction": "ViewAll"
+  },
+  {
+    "text": "Performance During GEB Visit",
+    "icon": "visibility",
+    "routerLink": "/under-construction",
+    "permissionName": "PPP",
+    "permissionAction": "ViewAll"
+  },
+  {
     "text": "Attribute",
     "icon": "dns",
-    "routerLink": "/attribute",
+    "routerLink": "/under-construction",
     "permissionName": "Attribute",
     "permissionAction": "ViewAll"
   }

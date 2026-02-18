@@ -1,1 +1,15 @@
-<p>registration-list works!</p>
+<mat-card>
+  <mat-card-title>
+    
+
+  </mat-card-title>
+  <mat-card-content>
+    @if (personalInfo.length > 0) {
+      <app-table [rowData]="personalInfo" [tablePaginationSettings]="tablePaginationSettings"
+        [enableCheckbox]="true" [isRowBackgroundColor]="true" [allowMultiSelect]="true" [tableMaxHeight]="'83vh'" (view)="view($event)" (edit)="edit($event)" (delete)="del($event)"
+        [sqColumnDefinition]="columns" 
+        >
+      </app-table>
+    }
+  </mat-card-content>
+</mat-card>
