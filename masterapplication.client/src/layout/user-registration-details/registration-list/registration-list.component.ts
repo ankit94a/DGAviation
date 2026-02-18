@@ -46,15 +46,18 @@ export class RegistrationListComponent extends TablePaginationSettingsConfig {
         }
     });
   }
-  view(){
-
-  }
-edit(){
-
+view(row: PersonalInfo) {
+  console.log('View:', row);
 }
-del(){
 
+edit(row: PersonalInfo) {
+  console.log('Edit:', row);
 }
+
+del(row: PersonalInfo) {
+  console.log('Delete:', row);
+}
+
 
 
   columns = [
