@@ -29,7 +29,7 @@ export class LastThreeAAAS extends BaseModel{
   sro: string;
 }
 
-export class AaaDetails extends BaseModel{
+export class AccidentalDetails extends BaseModel{
   personalInfoId: number;
   date: Date | string;
   acNoAndType: string;
@@ -39,3 +39,26 @@ export class AaaDetails extends BaseModel{
   statusPunish: string;
 }
 
+export class AdvExecRptRaised extends BaseModel{
+  personalInfoId?: number;
+  dt: string;
+  unit: string;
+  io: string;
+  ro: string;
+  sro: string;
+  decisionByDG: string;
+}
+
+export class ForeignVisit extends BaseModel {
+  personalInfoId: number;
+  appt: string;
+  fromDate: Date;
+  toDate: Date;
+  country: string;
+  remark: string;
+}
+
+export class DvDtails extends BaseModel{
+  personalInfoId: number;
+  details: string;
+}

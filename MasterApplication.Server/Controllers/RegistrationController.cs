@@ -18,7 +18,7 @@ namespace MasterApplication.Server.Controllers
             _encriptionService = encriptionService;
         }
         [HttpPost, Route("personalInfo")] 
-        public IActionResult AddPersonalInfo([FromForm] PersonalInfo personalInfo, [FromForm] IFormFile image)
+        public async Task<IActionResult> AddPersonalInfo([FromForm] PersonalInfo personalInfo, [FromForm] IFormFile image)
         {
             personalInfo.Name = personalInfo.Name.ToUpper();
             personalInfo.CreatedBy = 1;
@@ -26,17 +26,48 @@ namespace MasterApplication.Server.Controllers
             personalInfo.IsDeleted = false;
             personalInfo.IsActive = true;
 
-            //image //
+            if (image != null && image.Length > 0)
+            {
+                var folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "profile-img");
+
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var fileName = image.FileName;
+                var filePath = Path.Combine(folder, fileName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await image.CopyToAsync(stream);
+
+                personalInfo.ImgUrl = $"/profile-img/{fileName}";
+            }
 
             //personalInfo = _encriptionService.EncryptModel(personalInfo);
-            return Ok(_memberRegistrationDb.AddPersonalInfo(personalInfo));
+            return Ok(await _memberRegistrationDb.AddPersonalInfo(personalInfo));
         }
         [HttpPost, Route("personalInfo/updated")]
-        public IActionResult UpdatePersonalInfo([FromForm] PersonalInfo personalInfo, [FromForm] IFormFile image)
+        public async Task<IActionResult> UpdatePersonalInfo([FromForm] PersonalInfo personalInfo, [FromForm] IFormFile image)
         {
-          
+            personalInfo.Name = personalInfo.Name.ToUpper();
+            personalInfo.UpdatedBy = 1;
+            personalInfo.UpdatedOn = DateTime.Now;
+            if (image != null && image.Length > 0)
+            {
+                var folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "profile-img");
+
+                if (!Directory.Exists(folder))
+                    Directory.CreateDirectory(folder);
+
+                var fileName = image.FileName;
+                var filePath = Path.Combine(folder, fileName);
+
+                using var stream = new FileStream(filePath, FileMode.Create);
+                await image.CopyToAsync(stream);
+
+                personalInfo.ImgUrl = $"/profile-img/{fileName}";
+            }
             //personalInfo = _encriptionService.EncryptModel(personalInfo);
-            return Ok(_memberRegistrationDb.UpdatePersonalInfo(personalInfo));
+            return Ok(await _memberRegistrationDb.UpdatePersonalInfo(personalInfo));
         }
 
         [HttpGet, Route("personalInfo")]

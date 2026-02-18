@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedLibraryModule } from 'src/shared-library/shared-library.module';
 import { AgChartsModule } from 'ag-charts-angular';
-import { AgChartOptions, BarSeriesModule,DonutSeriesModule, GroupedCategoryAxisModule,PieSeriesModule, LegendModule, ModuleRegistry, NumberAxisModule, AllCommunityModule, AreaSeriesModule, CategoryAxisModule, } from 'ag-charts-community';
+import { AgChartOptions, BarSeriesModule, DonutSeriesModule, GroupedCategoryAxisModule, PieSeriesModule, LegendModule, ModuleRegistry, NumberAxisModule, AllCommunityModule, AreaSeriesModule, CategoryAxisModule, } from 'ag-charts-community';
+import { StatCard } from 'src/shared-library/models/dashboard.model';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,256 +11,193 @@ import { AgChartOptions, BarSeriesModule,DonutSeriesModule, GroupedCategoryAxisM
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
-
+export class DashboardComponent implements OnInit {
+  cards: StatCard[] = [];
+  chartOptions: AgChartOptions;
+  lineChartOptions: AgChartOptions;
+  pieChartOptions: AgChartOptions;
   constructor() {
-    ModuleRegistry.registerModules([AllCommunityModule,DonutSeriesModule, BarSeriesModule, GroupedCategoryAxisModule,PieSeriesModule, LegendModule, NumberAxisModule, AreaSeriesModule, CategoryAxisModule
+    ModuleRegistry.registerModules([AllCommunityModule, DonutSeriesModule, BarSeriesModule, GroupedCategoryAxisModule, PieSeriesModule, LegendModule, NumberAxisModule, AreaSeriesModule, CategoryAxisModule
     ]);
+    this.cards = [
+      {
+        title: 'Total Candidate',
+        value: 350,
+        icon: 'download',
+        colorClass: 'bg-success',
+        meta: 'This year',
+        positive: true
+      },
+      {
+        title: 'New Registered',
+        value: 80,
+        icon: 'upload',
+        colorClass: 'bg-primary',
+        meta: 'This year',
+        positive: false
+      },
+      {
+        title: 'Verified',
+        value: 155,
+        icon: 'block',
+        colorClass: 'bg-pink',
+        meta: 'This year',
+        positive: false
+      },
+      {
+        title: 'Under Verification',
+        value: 99,
+        icon: 'inventory',
+        colorClass: 'bg-dark',
+        meta: 'Available now',
+        positive: true
+      }
+    ];
   }
-  options: AgChartOptions = {
-    title: {
-      text: "Apple's Revenue by Product Category",
-    },
-    subtitle: {
-      text: "In Billion U.S. Dollars",
-    },
-    data: [
-      {
-        quarter: ["2018", "Q1"],
-        iphone: 140,
-        mac: 16,
-        ipad: 14,
-        wearables: 12,
-        services: 20,
-      },
-      {
-        quarter: ["2018", "Q2"],
-        iphone: 124,
-        mac: 20,
-        ipad: 14,
-        wearables: 12,
-        services: 30,
-      },
-      {
-        quarter: ["2018", "Q3"],
-        iphone: 112,
-        mac: 20,
-        ipad: 18,
-        wearables: 14,
-        services: 36,
-      },
-      {
-        quarter: ["2018", "Q4"],
-        iphone: 118,
-        mac: 24,
-        ipad: 14,
-        wearables: 14,
-        services: 36,
-      },
-      {
-        quarter: ["2019", "Q1"],
-        iphone: 124,
-        mac: 18,
-        ipad: 16,
-        wearables: 18,
-        services: 26,
-      },
-      {
-        quarter: ["2019", "Q2"],
-        iphone: 108,
-        mac: 20,
-        ipad: 16,
-        wearables: 18,
-        services: 40,
-      },
-      {
-        quarter: ["2019", "Q3"],
-        iphone: 96,
-        mac: 22,
-        ipad: 18,
-        wearables: 24,
-        services: 42,
-      },
-      {
-        quarter: ["2019", "Q4"],
-        iphone: 104,
-        mac: 22,
-        ipad: 14,
-        wearables: 20,
-        services: 40,
-      },
-    ],
-    series: [
-      {
-        type: "bar",
-        xKey: "quarter",
-        yKey: "iphone",
-        yName: "iPhone",
-      },
-      {
-        type: "bar",
-        xKey: "quarter",
-        yKey: "mac",
-        yName: "Mac",
-      },
-      {
-        type: "bar",
-        xKey: "quarter",
-        yKey: "ipad",
-        yName: "iPad",
-      },
-      {
-        type: "bar",
-        xKey: "quarter",
-        yKey: "wearables",
-        yName: "Wearables",
-      },
-      {
-        type: "bar",
-        xKey: "quarter",
-        yKey: "services",
-        yName: "Services",
-      },
-    ],
-    axes: {
-      x: {
-        type: "grouped-category",
-        label: { rotation: 0 },
-        depthOptions: [{}, { label: { fontWeight: "bold" } }],
-      },
-    },
-  };
-
-   options1: AgChartOptions = {
+  ngOnInit(): void {
+    this.initChart()
+    this.initLineChart();
+    this.initPieChart();
+  }
+  initPieChart() {
+    this.pieChartOptions = {
       title: {
-        text: "Sales by Month",
+        text: 'Candidate Status Distribution',
       },
+
+      data: this.getPieData(),
+
+      series: [
+        {
+          type: 'pie',
+          angleKey: 'value',
+          calloutLabelKey: 'status',   // ✅ correct property
+          sectorLabelKey: 'value',     // optional (shows value inside)
+        },
+      ],
+
+      legend: {
+        position: 'bottom',
+      },
+    };
+  }
+
+  initLineChart() {
+    this.lineChartOptions = {
+      title: {
+        text: 'Monthly Registration Trend',
+      },
+
+      data: this.getLineData(),
+
+      series: [
+        {
+          type: 'line',
+          xKey: 'month',
+          yKey: 'value',
+          yName: 'Registrations',
+          marker: {
+            enabled: true,
+          },
+        },
+      ],
+
+      legend: {
+        position: 'bottom',
+      },
+    };
+  }
+
+  initChart() {
+    this.chartOptions = {
+      title: {
+        text: 'Monthly Candidate Movement',
+      },
+
       data: this.getData1(),
       series: [
         {
-          type: "area",
-          xKey: "month",
-          yKey: "subscriptions",
-          yName: "Subscriptions",
-          stroke: "blue",
-          strokeWidth: 3,
-          lineDash: [3, 4],
-          fill: "lightBlue",
-        },
-        {
-          type: "area",
-          xKey: "month",
-          yKey: "services",
-          yName: "Services",
-          stroke: "red",
-          strokeWidth: 3,
-          fill: "pink",
-          marker: {
-            enabled: true,
-            fill: "red",
-          },
-        },
-        {
-          type: "area",
-          xKey: "month",
-          yKey: "products",
-          yName: "Products",
-          stroke: "green",
-          strokeWidth: 3,
-          fill: "lightGreen",
-          label: {
-            enabled: true,
-            fontWeight: "bold",
-            formatter: ({ value }) => value.toFixed(0),
-          },
-        },
-      ],
-    };
+          type: 'bar',
+          xKey: 'month',
+          yKey: 'registered',
+          yName: 'Registered',
+          cornerRadius: 6,
+          fill: '#22c55e',
 
-    options2: AgChartOptions = {
-      data: this.getData2(),
-      title: {
-        text: "Portfolio Composition",
-      },
-      series: [
+        },
         {
-          type: "pie",
-          angleKey: "amount",
-          calloutLabelKey: "asset",
-          sectorLabelKey: "amount",
-          sectorLabel: {
-            color: "white",
-            fontWeight: "bold",
-            formatter: ({ value }) => `$${(value / 1000).toFixed(0)}K`,
-          },
+          type: 'bar',
+          xKey: 'month',
+          yKey: 'verified',
+          yName: 'Verified',
+          cornerRadius: 6,
+          fill: '#3b82f6',
+
+        },
+        {
+          type: 'bar',
+          xKey: 'month',
+          yKey: 'pending',
+          yName: 'Pending',
+          cornerRadius: 6,
+          fill: '#ef4444',
+
         },
       ],
-    };
-    options3:AgChartOptions = {
-      data: this.getData3(),
-      title: {
-        text: "Portfolio Composition",
+      legend: {
+        position: 'bottom',
       },
-      subtitle: {
-        text: "Versus Previous Year",
+      axes: {
+        x: {
+          type: "grouped-category",
+          label: { rotation: 0 },
+          depthOptions: [{}, { label: { fontWeight: "bold" } }],
+        },
       },
-      series: [
-        {
-          type: "donut",
-          title: {
-            text: "Previous Year",
-          },
-          calloutLabelKey: "asset",
-          legendItemKey: "asset",
-          angleKey: "previousYear",
-          outerRadiusRatio: 1,
-          innerRadiusRatio: 0.9,
-        },
-        {
-          type: "donut",
-          title: {
-            text: "Current Year",
-          },
-          legendItemKey: "asset",
-          showInLegend: false,
-          angleKey: "currentYear",
-          outerRadiusRatio: 0.6,
-          innerRadiusRatio: 0.2,
-        },
-      ],
     };
-    getData1(){
-      return [
-    { month: "Jan", subscriptions: 222, services: 250, products: 200 },
-    { month: "Feb", subscriptions: 240, services: 255, products: 210 },
-    { month: "Mar", subscriptions: 280, services: 245, products: 195 },
-    { month: "Apr", subscriptions: 300, services: 260, products: 205 },
-    { month: "May", subscriptions: 350, services: 235, products: 215 },
-    { month: "Jun", subscriptions: 420, services: 270, products: 200 },
-    { month: "Jul", subscriptions: 300, services: 255, products: 225 },
-    { month: "Aug", subscriptions: 270, services: 305, products: 210 },
-    { month: "Sep", subscriptions: 260, services: 280, products: 250 },
-    { month: "Oct", subscriptions: 385, services: 250, products: 205 },
-    { month: "Nov", subscriptions: 320, services: 265, products: 215 },
-    { month: "Dec", subscriptions: 330, services: 255, products: 220 },
-  ];
-    }
-    getData2() {
-  return [
-    { asset: "Stocks", amount: 60000 },
-    { asset: "Bonds", amount: 40000 },
-    { asset: "Cash", amount: 7000 },
-    { asset: "Real Estate", amount: 5000 },
-    { asset: "Commodities", amount: 3000 },
-  ];
-}
-getData3() {
-  return [
-    { asset: "Stocks", previousYear: 70000, currentYear: 40000 },
-    { asset: "Bonds", previousYear: 30000, currentYear: 60000 },
-    { asset: "Cash", previousYear: 5000, currentYear: 7000 },
-    { asset: "Real Estate", previousYear: 8000, currentYear: 5000 },
-    { asset: "Commodities", previousYear: 4500, currentYear: 3000 },
-  ];
-}
+  }
+
+  getPieData() {
+    return [
+      { status: 'Registered', value: 420 },
+      { status: 'Verified', value: 350 },
+      { status: 'Pending', value: 180 },
+      { status: 'Rejected', value: 90 },
+    ];
+  }
+
+  getLineData() {
+    return [
+      { month: 'Jan', value: 220 },
+      { month: 'Feb', value: 240 },
+      { month: 'Mar', value: 280 },
+      { month: 'Apr', value: 300 },
+      { month: 'May', value: 350 },
+      { month: 'Jun', value: 420 },
+      { month: 'Jul', value: 300 },
+      { month: 'Aug', value: 270 },
+      { month: 'Sep', value: 260 },
+      { month: 'Oct', value: 385 },
+      { month: 'Nov', value: 320 },
+      { month: 'Dec', value: 330 },
+    ];
+  }
+
+  getData1() {
+    return [
+      { month: "Jan", registered: 222, verified: 250, pending: 200 },
+      { month: "Feb", registered: 240, verified: 255, pending: 210 },
+      { month: "Mar", registered: 280, verified: 245, pending: 195 },
+      { month: "Apr", registered: 300, verified: 260, pending: 205 },
+      { month: "May", registered: 350, verified: 235, pending: 215 },
+      { month: "Jun", registered: 420, verified: 270, pending: 200 },
+      { month: "Jul", registered: 300, verified: 255, pending: 225 },
+      { month: "Aug", registered: 270, verified: 305, pending: 210 },
+      { month: "Sep", registered: 260, verified: 280, pending: 250 },
+      { month: "Oct", registered: 385, verified: 250, pending: 205 },
+      { month: "Nov", registered: 320, verified: 265, pending: 215 },
+      { month: "Dec", registered: 330, verified: 255, pending: 220 },
+    ];
+  }
+
 }

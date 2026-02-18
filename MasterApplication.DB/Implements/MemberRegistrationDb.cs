@@ -17,7 +17,7 @@ namespace MasterApplication.DB.Implements
 
         }
         // personalInfo
-        public bool AddPersonalInfo(PersonalInfo personalInfo)
+        public async Task<bool> AddPersonalInfo(PersonalInfo personalInfo)
         {
             try
             {
@@ -69,7 +69,7 @@ namespace MasterApplication.DB.Implements
             @IsDeleted
         )";
 
-                var result = connection.Execute(query, personalInfo);
+                var result = await connection.ExecuteAsync(query, personalInfo);
                 return result > 0;
             }
             catch (Exception ex)
@@ -79,7 +79,7 @@ namespace MasterApplication.DB.Implements
             }
         }
 
-        public bool UpdatePersonalInfo(PersonalInfo personalInfo)
+        public async Task<bool> UpdatePersonalInfo(PersonalInfo personalInfo)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace MasterApplication.DB.Implements
             updatedon = @UpdatedOn
         WHERE id = @Id";
 
-                var result = connection.Execute(query, personalInfo);
+                var result = await connection.ExecuteAsync(query, personalInfo);
                 return result > 0;
             }
             catch (Exception ex)

@@ -1,27 +1,52 @@
-<!--
-    <div class="row">
-      <div class="col-12 col-lg-6">
-        <div class="card shadow-sm">
-            <ag-charts [options]="options"></ag-charts>
-        </div>
-      </div>
-      <div class="col-12 col-lg-6">
-        <div class="card shadow-sm">
-            <ag-charts [options]="options3"></ag-charts>
-        </div>
-      </div>
+<div class="stats-grid">
+  <div class="stat-card" *ngFor="let card of cards">
+    <div class="stat-icon" [ngClass]="card.colorClass">
+      <mat-icon>{{ card.icon }}</mat-icon>
     </div>
-    <br>
-    <div class="row">
-      <div class="col-12 col-lg-6">
-        <div class="card shadow-sm">
-            <ag-charts [options]="options2"></ag-charts>
-        </div>
-      </div>
-      <div class="col-12 col-lg-6">
-        <div class="card shadow-sm">
-            <ag-charts [options]="options1"></ag-charts>
-        </div>
-      </div>
+    <div class="stat-content">
+      <p class="stat-title">{{ card.title }}</p>
+      <h3 class="stat-value">{{ card.value }}</h3>
+      <p class="stat-meta" [ngClass]="{ 'positive': card.positive, 'muted': !card.positive }">
+        {{ card.meta }}
+      </p>
     </div>
- -->
+  </div>
+</div>
+
+
+<br>
+
+<div class="chart-card">
+  <div class="chart-header">
+    <ag-charts style="width: 100%; height: 400px;" [options]="chartOptions">
+    </ag-charts>
+  </div>
+</div>
+
+
+<br>
+
+<div class="row">
+  <div class="col-md-6 p-left">
+ <div class="chart-card ">
+    <div class="chart-header">
+        <ag-charts style="width: 100%; height: 400px;" [options]="lineChartOptions">
+        </ag-charts>
+    </div>
+  </div>
+  </div>
+
+<div class="col-md-6 p-right">
+<div class="chart-card">
+    <div class="chart-header">
+        <ag-charts style="width: 100%; height: 400px;" [options]="pieChartOptions">
+        </ag-charts>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>

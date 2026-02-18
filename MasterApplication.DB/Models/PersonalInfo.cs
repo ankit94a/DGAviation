@@ -23,10 +23,10 @@ namespace MasterApplication.DB.Models
 
         public string ApptHeld { get; set; }
 
-        public DateTime? DtOfCommission { get; set; }
+        public DateTime DtOfCommission { get; set; }
         public string MedCategory { get; set; }
 
-        public DateTime? DtOfSeniority { get; set; }
+        public DateTime DtOfSeniority { get; set; }
 
         public string Category { get; set; }
 
@@ -42,6 +42,7 @@ namespace MasterApplication.DB.Models
         public string ImgUrl { get; set; }
       
     }
+   
     public class LastThreeAAAS : BaseModel
     {
         public int PersonalInfoId { get; set; }
@@ -92,7 +93,7 @@ namespace MasterApplication.DB.Models
     }
     public class PhysService : BaseModel
     {
-        public long? PersonalInfoId { get; set; }
+        public long PersonalInfoId { get; set; }
 
         public string PreviouseIo { get; set; } = null!;
 
@@ -112,7 +113,7 @@ namespace MasterApplication.DB.Models
     }
     public class ForeignVisit : BaseModel
     {
-        public long? PersonalInfoId { get; set; }
+        public long PersonalInfoId { get; set; }
 
         public string Appt { get; set; } = null!;
 
@@ -124,23 +125,14 @@ namespace MasterApplication.DB.Models
 
         public string Remark { get; set; }
     }
-    public class DvDtails
+    public class DvDtails : BaseModel
     {
-        public long Id { get; set; }
         public long? PersonalInfoId { get; set; }
         public string Details { get; set; }
-        public int? CreatedBy { get; set; }
-        public int? UpdatedBy { get; set; }
-        public DateTime? CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-        public bool? IsActive { get; set; }
-        public bool? IsDeleted { get; set; }
     }
-    public class ServiceFLG
+    public class ServiceFLG : BaseModel
     {
-        public long Id { get; set; }
         public long? PersonalInfoId { get; set; }
-
         public string Type { get; set; }
         public string Dual { get; set; }
         public string Pilot { get; set; }
@@ -148,96 +140,41 @@ namespace MasterApplication.DB.Models
         public string Nvg { get; set; }
         public string Sml { get; set; }
         public string Instr { get; set; }
-
-        public int? CreatedBy { get; set; }
-        public int? UpdatedBy { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-
-        public bool? IsActive { get; set; }
-        public bool? IsDeleted { get; set; }
     }
-    public class CourseAvnQual
+    public class CourseAvnQual : BaseModel
     {
-        public long Id { get; set; }
         public long? PersonalInfoId { get; set; }
         public int? QualId { get; set; }
-
         public string Instt { get; set; }
         public string Granding { get; set; }
         public string Remark { get; set; }
-
-        public int? CreatedBy { get; set; }
-        public int? UpdatedBy { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-
-        public bool? IsActive { get; set; }
-        public bool? IsDeleted { get; set; }
     }
-    public class CoreAttributeFlgRating
+    public class CoreAttributeFlgRating : BaseModel
     {
-        public long Id { get; set; }
-        public long? PersonalInfoId { get; set; }
-        public int? CoreAttrId { get; set; }
-
-        public int? Io { get; set; }
-        public int? Ro { get; set; }
-        public int? Sro { get; set; }
-
-        public int? CreatedBy { get; set; }
-        public int? UpdatedBy { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-
-        public bool? IsActive { get; set; }
-        public bool? IsDeleted { get; set; }
+        public long PersonalInfoId { get; set; }
+        public int CoreAttrId { get; set; }
+        public int Io { get; set; }
+        public int Ro { get; set; }
+        public int Sro { get; set; }
     }
-    public class RecomForEMP
+    public class RecomForEMP : BaseModel
     {
-        public long Id { get; set; }
         public long? PersonalInfoId { get; set; }
-
-        public int RecomId { get; set; }   // NOT NULL in DB
-
+        public int RecomId { get; set; }   
         public string Io { get; set; }
         public string Ro { get; set; }
         public string Sro { get; set; }
-
-        public int? CreatedBy { get; set; }
-        public int? UpdatedBy { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-
-        public bool? IsActive { get; set; }
-        public bool? IsDeleted { get; set; }
     }
-    public class ReportingOfficersDetails
+    public class ReportingOfficersDetails : BaseModel
     {
-        public long Id { get; set; }
-        public long? PersonalInfoId { get; set; }
-
+        public long PersonalInfoId { get; set; }
         public string ReportingOfficer { get; set; }
         public string Sign { get; set; }
         public string Rk { get; set; }
         public string Name { get; set; }
         public string Appt { get; set; }
-
         public DateTime? DtOfRecdOn { get; set; }
         public DateTime? DtOfDespOn { get; set; }
-
-        public int? CreatedBy { get; set; }
-        public int? UpdatedBy { get; set; }
-
-        public DateTime? CreatedOn { get; set; }
-        public DateTime? UpdatedOn { get; set; }
-
-        public bool? IsActive { get; set; }
-        public bool? IsDeleted { get; set; }
     }
 
 }

@@ -409,14 +409,238 @@
 
 
 
-      <mat-step>
-        <ng-template matStepLabel>Done</ng-template>
-        <p>You are now done.</p>
-        <div>
-          <button matButton matStepperPrevious>Back</button>
-          <button matButton (click)="stepper.reset()">Reset</button>
-        </div>
+      <mat-step [stepControl]="thirdFormGroup" label="Service Details">
+        <form [formGroup]="thirdFormGroup">
+
+          <div formArrayName="advExecRptRaisedList">
+            <mat-label>Adv Exec Report Raised</mat-label>
+
+            <table mat-table [dataSource]="advExecRptRaisedList.controls" class="mat-elevation-z2 w-100 mt-2">
+
+              <ng-container matColumnDef="index">
+                <th mat-header-cell *matHeaderCellDef>#</th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                  {{ i + 1 }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dt">
+                <th mat-header-cell *matHeaderCellDef>Date</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput [matDatepicker]="picker" formControlName="dt" placeholder="Select Date">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="unit">
+                <th mat-header-cell *matHeaderCellDef>Unit</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="unit" placeholder="Enter Unit">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="io">
+                <th mat-header-cell *matHeaderCellDef>IO</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="io">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="ro">
+                <th mat-header-cell *matHeaderCellDef>RO</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="ro">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="sro">
+                <th mat-header-cell *matHeaderCellDef>SRO</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="sro">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="decisionByDG">
+                <th mat-header-cell *matHeaderCellDef>Decision By DG</th>
+                <td mat-cell *matCellDef="let element; let i = index" [formGroupName]="i">
+                  <mat-form-field appearance="fill" class="w-100">
+                    <input matInput formControlName="decisionByDG">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns2"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+
+            </table>
+          </div>
+
+          <br>
+          <div class="row">
+            <div class="col-md-9">
+
+  <mat-label>Official Foreign Visits</mat-label>
+
+  <div formArrayName="foreignVisitList">
+
+    <table mat-table
+           [dataSource]="foreignVisitList.controls"
+           class="custom-table w-100">
+
+      <!-- Index -->
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef class="col-index">#</th>
+        <td mat-cell *matCellDef="let element; let i = index"
+            class="col-index">
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+
+      <!-- Appt -->
+      <ng-container matColumnDef="appt">
+        <th mat-header-cell *matHeaderCellDef class="col-appt">Appt</th>
+        <td mat-cell *matCellDef="let element; let i = index"
+            [formGroupName]="i">
+          <mat-form-field appearance="fill" class="table-field">
+            <input matInput formControlName="appt">
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- From -->
+      <ng-container matColumnDef="fromDate">
+        <th mat-header-cell *matHeaderCellDef class="col-date">From</th>
+        <td mat-cell *matCellDef="let element; let i = index"
+            [formGroupName]="i">
+          <mat-form-field appearance="fill" class="table-field">
+            <input matInput
+                   [matDatepicker]="fromPicker"
+                   formControlName="fromDate">
+            <mat-datepicker-toggle matSuffix [for]="fromPicker"></mat-datepicker-toggle>
+            <mat-datepicker #fromPicker></mat-datepicker>
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- To -->
+      <ng-container matColumnDef="toDate">
+        <th mat-header-cell *matHeaderCellDef class="col-date">To</th>
+        <td mat-cell *matCellDef="let element; let i = index"
+            [formGroupName]="i">
+          <mat-form-field appearance="fill" class="table-field">
+            <input matInput
+                   [matDatepicker]="toPicker"
+                   formControlName="toDate">
+            <mat-datepicker-toggle matSuffix [for]="toPicker"></mat-datepicker-toggle>
+            <mat-datepicker #toPicker></mat-datepicker>
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- Country -->
+      <ng-container matColumnDef="country">
+        <th mat-header-cell *matHeaderCellDef class="col-country">Country</th>
+        <td mat-cell *matCellDef="let element; let i = index"
+            [formGroupName]="i">
+          <mat-form-field appearance="fill" class="table-field">
+            <input matInput formControlName="country">
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <!-- Remark -->
+      <ng-container matColumnDef="remark">
+        <th mat-header-cell *matHeaderCellDef class="col-remark">Remark</th>
+        <td mat-cell *matCellDef="let element; let i = index"
+            [formGroupName]="i">
+          <mat-form-field appearance="fill" class="table-field">
+            <textarea matInput
+                      formControlName="remark"
+                      rows="1">
+            </textarea>
+          </mat-form-field>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="foreignColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: foreignColumns;"></tr>
+
+    </table>
+
+  </div>
+</div>
+
+
+
+            <!-- ================= RIGHT BOX ================= -->
+           <div class="col-md-3">
+
+  <mat-label class="section-title">DV Details</mat-label>
+
+  <div formArrayName="dvDetailsList">
+
+    <table mat-table
+           [dataSource]="dvDetailsList.controls"
+           class="custom-table w-100">
+
+      <!-- Index -->
+      <ng-container matColumnDef="index">
+        <th mat-header-cell *matHeaderCellDef class="col-index">#</th>
+        <td mat-cell *matCellDef="let element; let i = index"
+            class="col-index">
+          {{ i + 1 }}
+        </td>
+      </ng-container>
+
+      <!-- Details -->
+      <ng-container matColumnDef="details">
+        <th mat-header-cell *matHeaderCellDef>Details</th>
+        <td mat-cell *matCellDef="let element; let i = index"
+            [formGroupName]="i">
+
+          <mat-form-field appearance="fill" class="table-field">
+            <textarea matInput
+                      formControlName="details"
+                      rows="2">
+            </textarea>
+          </mat-form-field>
+
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="dvColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: dvColumns;"></tr>
+
+    </table>
+
+  </div>
+</div>
+
+
+          </div>
+
+
+
+          <div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button (click)="stepper.reset()">Reset</button>
+          </div>
+
+        </form>
       </mat-step>
+
     </mat-stepper>
   </mat-card-content>
 </mat-card>

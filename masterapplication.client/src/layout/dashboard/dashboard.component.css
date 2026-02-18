@@ -1,12 +1,266 @@
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: all 0.25s ease;
+  cursor: default;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.12);
+}
+
+.stat-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.stat-icon mat-icon {
+  font-size: 22px;
+}
+
+.bg-dark {
+  background: linear-gradient(135deg, #343a40, #212529);
+}
+
+.bg-primary {
+  background: linear-gradient(135deg, #3399ff, #0066ff);
+}
+
+.bg-success {
+  background: linear-gradient(135deg, #5ec576, #2eb85c);
+}
+
+.bg-pink {
+  background: linear-gradient(135deg, #e83e8c, #d63384);
+}
+
+.stat-content {
+  flex: 1;
+}
+
+.stat-title {
+  font-size: 13px;
+  color: #8a93a2;
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2933;
+  margin: 0;
+}
+
+.stat-meta {
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.stat-meta.positive {
+  color: #2eb85c;
+}
+
+.stat-meta.muted {
+  color: #8a93a2;
+}
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* charts */
+.chart-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 10px 26px rgba(0,0,0,.08);
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: .5rem;
+
+  h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1f2937;
+  }
+
+  span {
+    font-size: 13px;
+    color: #6b7280;
+  }
+}
+
+.ag-chart {
+  width: 100%;
+  height: 360px;
+}
+
+
+
+.table-card {
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  padding: 16px;
+  height: 100%;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.table-header h5 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.table-sub {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.table-wrapper {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.stock-table thead {
+  background: #f8fafc;
+}
+
+.stock-table th {
+  padding: 10px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.stock-table td {
+  padding: 12px 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #111827;
+}
+
+.stock-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.qty-badge {
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.text-end {
+  text-align: right;
+}
+.qty-badge.low {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.type-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.type-badge.received {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.type-badge.issued {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.type-badge.condemned {
+  background: #fdecea;
+  color: #c62828;
+}
+
+.qty-badge {
+  background: #f3f4f6;
+  padding: 4px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.table-wrapper {
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.stock-table th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+}
+.blur-background{
+  background: rgb(239, 240, 241)
+}
+
 ag-charts,
 ag-financial-charts,
 ag-gauge {
     display: block;
     padding: 1rem;
-    height: 100%;
-    border-radius: 8px;
-    background-color: var(--chart-bg);
-    border: 1px solid var(--chart-border);
-    overflow: hidden;
-    transform: translate3d(0, 0, 0);
+}
+
+.p-left{
+  padding-left: 0 !important;
+}
+.p-right{
+  padding-right: 0 !important;
 }

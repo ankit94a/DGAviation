@@ -8,8 +8,8 @@ namespace MasterApplication.DB.Interface
     public interface IMemberRegistrationDb
     {
         // personal info
-        public bool AddPersonalInfo(PersonalInfo personalInfo);
-        public bool UpdatePersonalInfo(PersonalInfo personalInfo);
+        public Task<bool> AddPersonalInfo(PersonalInfo personalInfo);
+        public Task<bool> UpdatePersonalInfo(PersonalInfo personalInfo);
         public IEnumerable<PersonalInfo> GetAllPersonalInfo();
         public PersonalInfo GetPersonalInfoById(int id);
 
