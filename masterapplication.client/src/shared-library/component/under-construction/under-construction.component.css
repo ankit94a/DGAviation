@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+.uc-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f3f4f6;
+  padding: 20px;
+  font-family: 'Inter', sans-serif;
+}
+
+.uc-content {
+  text-align: center;
+  background: #ffffff;
+  padding: 48px 64px;
+  border-radius: 16px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  max-width: 520px;
+  width: 100%;
+}
+
+.uc-content h1 {
+  font-size: 28px;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.uc-content p {
+  color: #4b5563;
+  font-size: 15px;
+  margin-bottom: 28px;
+  line-height: 1.6;
+}
+
+/* Animation container */
+.uc-animation {
+  position: relative;
+  width: 160px;
+  height: 120px;
+  margin: 0 auto 32px;
+}
+
+/* Hard hat icon */
+.hard-hat {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 80px;
+  background-image: url('https://img.icons8.com/fluency/144/hard-hat.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+/* Rotating gear */
+.gear {
+  position: absolute;
+  bottom: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 48px;
+  background-image: url('https://img.icons8.com/color/96/gear.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+/* Button spacing */
+button {
+  min-width: 200px;
+}

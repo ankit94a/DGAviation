@@ -2,6 +2,7 @@
 using MasterApplication.DB.Interface;
 using MasterApplication.DB.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using System.Security.Cryptography.Xml;
 
 namespace MasterApplication.Server.Controllers
@@ -90,28 +91,56 @@ namespace MasterApplication.Server.Controllers
             return Ok(data);
         }
 
-        [HttpPost, Route("LastThreeAAAS")]
-        public IActionResult AddLastThreeAAAS([FromForm] LastThreeAAAS lastThreeAAAS)
-        {
+        //[HttpPost, Route("LastThreeAAAS")]
+        //public IActionResult AddLastThreeAAAS([FromForm] LastThreeAAAS lastThreeAAAS)
+        //{
 
-            lastThreeAAAS.CreatedBy = 1;
-            lastThreeAAAS.CreatedOn = DateTime.Now;
-            lastThreeAAAS.IsDeleted = false;
-            lastThreeAAAS.IsActive = true;
-            //lastThreeAAAS = _encriptionService.EncryptModel(lastThreeAAAS);
-            return Ok(_memberRegistrationDb.AddLastThreeAAAS(lastThreeAAAS));
-        }
-        [HttpPost, Route("AccidentDetails")]
-        public IActionResult AddAccidentDetails([FromForm] AccidentDetails accidentDetails)
-        {
+        //    lastThreeAAAS.CreatedBy = 1;
+        //    lastThreeAAAS.CreatedOn = DateTime.Now;
+        //    lastThreeAAAS.IsDeleted = false;
+        //    lastThreeAAAS.IsActive = true;
+        //    //lastThreeAAAS = _encriptionService.EncryptModel(lastThreeAAAS);
+        //    return Ok(_memberRegistrationDb.AddLastThreeAAAS(lastThreeAAAS));
+        //}
+        //[HttpPost, Route("AccidentDetails")]
+        //public IActionResult AddAccidentDetails([FromForm] AccidentDetails accidentDetails)
+        //{
 
-            accidentDetails.CreatedBy = 1;
-            accidentDetails.CreatedOn = DateTime.Now;
-            accidentDetails.IsDeleted = false;
-            accidentDetails.IsActive = true;
-            //accidentDetails = _encriptionService.EncryptModel(accidentDetails);
-            return Ok(_memberRegistrationDb.AddAccidentDetails(accidentDetails));
+        //    accidentDetails.CreatedBy = 1;
+        //    accidentDetails.CreatedOn = DateTime.Now;
+        //    accidentDetails.IsDeleted = false;
+        //    accidentDetails.IsActive = true;
+        //    //accidentDetails = _encriptionService.EncryptModel(accidentDetails);
+        //    return Ok(_memberRegistrationDb.AddAccidentDetails(accidentDetails));
+        //}
+
+        [HttpPost, Route("SaveAAAAndAccident")]
+        public async Task<IActionResult> SaveAAAAndAccident([FromBody] AAAAndAccidentRequest request)
+        {
+            if (request == null)
+                return BadRequest("Invalid data");
+
+            var now = DateTime.Now;
+
+            foreach (var aaa in request.LastThreeAAAS)
+            {
+                aaa.CreatedBy = 1;
+                aaa.CreatedOn = now;
+                aaa.IsDeleted = false;
+                aaa.IsActive = true;
+            }
+
+            foreach (var accident in request.AccidentDetails)
+            {
+                accident.CreatedBy = 1;
+                accident.CreatedOn = now;
+                accident.IsDeleted = false;
+                accident.IsActive = true;
+            }
+
+            return Ok(await _memberRegistrationDb.SaveAAAAndAccident(request));
         }
+
         [HttpPost, Route("AdvExecRptRaised")]
         public IActionResult AddAdvExecRptRaised([FromForm] AdvExecRptRaised advExecRptRaised)
         {

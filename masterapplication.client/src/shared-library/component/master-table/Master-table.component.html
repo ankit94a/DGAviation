@@ -78,7 +78,6 @@
           @if (tablePaginationSettings.enableColumn) {
           <button class="btn btn-link" type="button" matTooltip="filter" #menuTrigger="matMenuTrigger"
             [matMenuTriggerFor]="mainMenuButton">
-            <!-- <img src="filter.svg" alt="filter" width="25px"> -->
              <mat-icon>filter_list</mat-icon>
           </button>
           } @else {
@@ -105,13 +104,15 @@
         </div>
       </mat-header-cell>
       <mat-cell *matCellDef="let element;let i = index;">
+        @if(element!=null && tablePaginationSettings.enableView){
+          <button mat-icon-button color="primary" type="button" (click)="viewObj(element)" matTooltip="view"><mat-icon>visibility</mat-icon></button>
+        }
         @if (element!=null && tablePaginationSettings.enableEdit) {
-        <button mat-icon-button color="accent" type="button" (click)="editObj(element)" matTooltip="edit"><img
-            src="edit.svg" width="30px" alt="edit"></button>
+        <button mat-icon-button color="accent" type="button" (click)="editObj(element)" matTooltip="edit"><mat-icon>edit</mat-icon></button>
         }
         @if (element!=null && tablePaginationSettings.enableDelete) {
         <button mat-icon-button color="warn" type="button" (click)="deleteObj(i,element)" matTooltip="delete">
-          <img src="delete.svg" alt="delete" width="35px">
+          <mat-icon>delete</mat-icon>
         </button>
         }
       </mat-cell>
