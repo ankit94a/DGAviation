@@ -8,10 +8,11 @@ import { UserIdleService } from '../../service/user-idol.service';
 import { ApiService } from '../../service/api.service';
 import { FormControl } from '@angular/forms';
 import { DashboardComponent } from 'src/layout/dashboard/dashboard.component';
+import { ImageThumbnailComponent } from '../master-table/image-thumbnail.component';
 
 @Component({
   selector: 'app-header',
-  imports: [SharedLibraryModule, RouterModule, ],
+  imports: [SharedLibraryModule, RouterModule, ImageThumbnailComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -121,7 +122,7 @@ export class HeaderComponent implements OnInit {
       this.pageNumber = 1;
     }
     if (this.searchValue.length >= 3) {
-      this.apiService.getWithHeaders('itemmaster/search/' + this.searchValue + "/" + this.pageNumber).subscribe((data) => {
+      this.apiService.getWithHeaders('registration/search/' + this.searchValue + "/" + this.pageNumber).subscribe((data) => {
           if (data && !loadMore) {
             this.entityList = data;
             this.searchDataFlag = false;

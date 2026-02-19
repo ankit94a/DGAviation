@@ -25,6 +25,9 @@ builder.Services.AddSingleton<RSAKeyManager>();
 
 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // ------------------------
 // Memory Cache
 // ------------------------
@@ -111,6 +114,11 @@ app.MapStaticAssets();
 // ------------------------
 // Compression (early)
 // ------------------------
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 app.UseResponseCompression();
 
 // ------------------------

@@ -18,6 +18,47 @@ namespace MasterApplication.DB.Implements
         {
 
         }
+
+        public async Task<List<CommonAttribute>> GetCandidate(string searchKeyWord, long pageNumber)
+        {
+            try
+            {
+                searchKeyWord = searchKeyWord?.Trim();
+
+                int pageSize = 20;
+                int offset = (int)((pageNumber - 1) * pageSize);
+
+                const string query = @"SELECT Id,Name,imgUrl FROM PersonalInfo WHERE IsActive = 1 AND Name LIKE '%' + @SearchKeyword + '%' ORDER BY Name
+                                        OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY;";
+
+                var result = await connection.QueryAsync<CommonAttribute>(query, new
+                {
+                    SearchKeyword = searchKeyWord,
+                    Offset = offset,
+                    PageSize = pageSize
+                });
+
+                return result.ToList();
+            }
+            catch (Exception ex)
+            {
+                MasterLogger.Error(ex, "Class=MemberRegistrationDB, Method=GetCandidate");
+                throw;
+            }
+        }
+        public async Task<PersonalInfo> GetByIcNumber(string icNumber)
+        {
+            try
+            {
+                string query = @"select * from personalInfo where icnumber=@icnumber and isactive = 1";
+                return await connection.QueryFirstAsync(query, new { icnumber = icNumber });
+            }
+            catch (Exception ex)
+            {
+                MasterLogger.Error(ex, "Class=MemberRegistrationDB, Method=GetByIcNumber");
+                throw;
+            }
+        }
         // personalInfo
         public async Task<bool> AddPersonalInfo(PersonalInfo personalInfo)
         {

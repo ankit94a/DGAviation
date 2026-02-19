@@ -86,38 +86,6 @@ export class RegistrationAddComponent extends EnumBase implements OnInit {
     });
 }
 
-  // saveStepSecond(){
-  //   debugger
-  //    if (this.secondFormGroup.invalid) {
-  //     this.secondFormGroup.markAllAsTouched();
-  //     this.toastr.error('Please fill all required fields', 'Validation Error');
-  //     return;
-  //    }
-  // const formDataSecond = new FormData();
-  // const formValue = this.secondFormGroup.value;
-
-  //   Object.keys(this.secondFormGroup.value).forEach(key => {
-  //     let value = formValue[key];
-
-  // // Convert specific date fields
-  // if (
-  //    (key === 'From' ||
-  //      key === 'To' ||
-  //      key === 'dt') 
-  //     && value
-  //    ) {
-  //   value = new Date(value).toISOString();
-  // }
-
-  // formDataSecond.append(key, value);
-  //     formDataSecond.append(key, this.secondFormGroup.value[key]);
-  //   });
-  //    this.apiService.postWithHeader(this.apiUrl, formDataSecond).subscribe(res => {
-  //     if (res) {
-  //       this.toastr.success("Detail Successfully Saved", 'success');
-  //     }
-  //   })
-  // }
   ngOnInit(): void {
     this.initializeForm();
     this.secondFormGroup = this._formBuilder.group({

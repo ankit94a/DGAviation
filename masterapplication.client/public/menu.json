@@ -1,13 +1,11 @@
 [
-
   {
     "text": "Dashboard",
     "icon": "dashboard",
     "routerLink": "/dashboard",
     "permissionName": "Dashboard",
     "permissionAction": "ViewAll",
-    "children": [
-    ]
+    "children": []
   },
   {
     "text": "New Registration",
@@ -28,7 +26,30 @@
     "icon": "assessment",
     "routerLink": "/under-construction",
     "permissionName": "PPP",
-    "permissionAction": "ViewAll"
+    "permissionAction": "ViewAll",
+    "children": [
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      },
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      },
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      }
+    ]
   },
   {
     "text": "Army Aviation Performance Form",
@@ -42,14 +63,60 @@
     "icon": "description",
     "routerLink": "/under-construction",
     "permissionName": "PPP",
-    "permissionAction": "ViewAll"
+    "permissionAction": "ViewAll",
+     "children": [
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      },
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      },
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      }
+    ]
   },
   {
     "text": "Record of Annual Assessment of Aviators",
     "icon": "fact_check",
     "routerLink": "/under-construction",
     "permissionName": "PPP",
-    "permissionAction": "ViewAll"
+    "permissionAction": "ViewAll",
+     "children": [
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      },
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      },
+      {
+        "text": "Dummy",
+        "icon": "description",
+        "routerLink": "/under-construction",
+        "permissionName": "PPP",
+        "permissionAction": "ViewAll"
+      }
+    ]
   },
   {
     "text": "Performance During GEB Visit",

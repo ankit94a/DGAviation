@@ -9,6 +9,7 @@
     <SpaProxyServerUrl>https://localhost:56726</SpaProxyServerUrl>
 	<ServerGarbageCollection>true</ServerGarbageCollection>
 	<ConcurrentGarbageCollection>true</ConcurrentGarbageCollection>
+	
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,6 +19,7 @@
       <Version>10.*-*</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
 	  <Reference Include="SAMLSignatureVerification">
 		  <HintPath>lib\SAMLSignatureVerification.dll</HintPath>
 	  </Reference>
@@ -33,5 +35,10 @@
   <ItemGroup>
     <ProjectReference Include="..\MasterApplication.DB\MasterApplication.DB.csproj" />
   </ItemGroup>
+	<Target Name="BuildAngular" AfterTargets="Publish">
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+		<Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --configuration production" />
+		<Exec Command="xcopy &quot;$(SpaRoot)\dist\*&quot; &quot;$(PublishDir)wwwroot\&quot; /E /I /Y" />
+	</Target>
 
 </Project>

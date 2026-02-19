@@ -1,7 +1,7 @@
 <section class="example-container mat-elevation-z8" tabindex="0" style="overflow: auto; width: auto;"
   [style.max-height]="tableMaxHeight">
 
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <mat-table [dataSource]="dataSource">
     @for (column of sqColumnDefinition; track column) {
     <ng-container matColumnDef="{{column.name}}" sticky="true">
       @if (column.name ==='select') {
@@ -56,6 +56,9 @@
       <mat-cell *matCellDef="let element">
         <div>
           @switch (column.valueType) {
+          @case ('custom') {
+          <custom-view-component class="d-flex align-items-center justify-content-center" [column]="column" [element]="element"></custom-view-component>
+          }
           @case ('link') {
           <a class="btn-link" (click)="sendFileRow(element)">{{getValues(element,column) }}</a>
           }
@@ -78,7 +81,7 @@
           @if (tablePaginationSettings.enableColumn) {
           <button class="btn btn-link" type="button" matTooltip="filter" #menuTrigger="matMenuTrigger"
             [matMenuTriggerFor]="mainMenuButton">
-             <mat-icon>filter_list</mat-icon>
+            <mat-icon>filter_list</mat-icon>
           </button>
           } @else {
           Action
@@ -105,10 +108,12 @@
       </mat-header-cell>
       <mat-cell *matCellDef="let element;let i = index;">
         @if(element!=null && tablePaginationSettings.enableView){
-          <button mat-icon-button color="primary" type="button" (click)="viewObj(element)" matTooltip="view"><mat-icon>visibility</mat-icon></button>
+        <button mat-icon-button color="primary" type="button" (click)="viewObj(element)"
+          matTooltip="view"><mat-icon>visibility</mat-icon></button>
         }
         @if (element!=null && tablePaginationSettings.enableEdit) {
-        <button mat-icon-button color="accent" type="button" (click)="editObj(element)" matTooltip="edit"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button color="accent" type="button" (click)="editObj(element)"
+          matTooltip="edit"><mat-icon>edit</mat-icon></button>
         }
         @if (element!=null && tablePaginationSettings.enableDelete) {
         <button mat-icon-button color="warn" type="button" (click)="deleteObj(i,element)" matTooltip="delete">

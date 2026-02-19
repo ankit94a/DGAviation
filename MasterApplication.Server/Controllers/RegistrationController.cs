@@ -1,6 +1,7 @@
 ﻿using MasterApplication.DB.Implements;
 using MasterApplication.DB.Interface;
 using MasterApplication.DB.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using System.Security.Cryptography.Xml;
@@ -17,6 +18,28 @@ namespace MasterApplication.Server.Controllers
         {
             _memberRegistrationDb = memberRegistrationDb;
             _encriptionService = encriptionService;
+        }
+
+        [HttpGet, Route("search/{searchKeyWord}/{pageNumber}")]
+        public async Task<IActionResult> GetCandidate(string searchKeyWord, long pageNumber)
+        {
+            var result = await _memberRegistrationDb.GetCandidate(searchKeyWord, pageNumber);
+            foreach (var item in result)
+            {
+                item.ImgUrl = $"{Request.Scheme}://{Request.Host}{item.ImgUrl}";
+            }
+            return Ok(result);
+        }
+        [HttpGet,Route("icnumber/icNumber")]
+        public async Task<IActionResult> GetByIcNumber(string icNumber)
+        {
+            icNumber = icNumber.Trim();
+            if (string.IsNullOrEmpty(icNumber))
+            {
+                return BadRequest("IC Number is Required");
+            }
+            var result = await _memberRegistrationDb.GetByIcNumber(icNumber);
+            return Ok(result);
         }
         [HttpPost, Route("personalInfo")] 
         public async Task<IActionResult> AddPersonalInfo([FromForm] PersonalInfo personalInfo, [FromForm] IFormFile image)
@@ -46,6 +69,7 @@ namespace MasterApplication.Server.Controllers
             //personalInfo = _encriptionService.EncryptModel(personalInfo);
             return Ok(await _memberRegistrationDb.AddPersonalInfo(personalInfo));
         }
+       
         [HttpPost, Route("personalInfo/updated")]
         public async Task<IActionResult> UpdatePersonalInfo([FromForm] PersonalInfo personalInfo, [FromForm] IFormFile image)
         {
@@ -75,8 +99,11 @@ namespace MasterApplication.Server.Controllers
         public IActionResult GetAll()
         {
             var encryptedData = _memberRegistrationDb.GetAllPersonalInfo();
-       
-          //  var decryptedData = encryptedData.Select(p => _encriptionService.DecryptModel(p)).ToList();
+            foreach (var item in encryptedData)
+            {
+                item.ImgUrl = $"{Request.Scheme}://{Request.Host}{item.ImgUrl}";
+            }
+            //  var decryptedData = encryptedData.Select(p => _encriptionService.DecryptModel(p)).ToList();
             return Ok(encryptedData);
         }
 

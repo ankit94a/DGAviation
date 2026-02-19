@@ -8,6 +8,8 @@ namespace MasterApplication.DB.Interface
 {
     public interface IMemberRegistrationDb
     {
+        public Task<List<CommonAttribute>> GetCandidate(string searchKeyWord, long pageNumber);
+        public Task<PersonalInfo> GetByIcNumber(string icNumber);
         // personal info
         public Task<bool> AddPersonalInfo(PersonalInfo personalInfo);
         public Task<bool> UpdatePersonalInfo(PersonalInfo personalInfo);

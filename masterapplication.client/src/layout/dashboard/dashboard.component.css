@@ -264,3 +264,6 @@ ag-gauge {
 .p-right{
   padding-right: 0 !important;
 }
+main{
+  padding: 1rem;
+}

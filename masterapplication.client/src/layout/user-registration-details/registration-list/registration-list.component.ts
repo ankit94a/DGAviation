@@ -8,6 +8,7 @@ import { TablePaginationSettingsConfig } from '../../../shared-library/component
 import { ApiService } from '../../../shared-library/service/api.service';
 import { AuthService } from '../../../shared-library/service/auth.service';
 import { PersonalInfo } from '../../../shared-library/models/personalinfo.model';
+import { ImageThumbnailComponent } from 'src/shared-library/component/master-table/image-thumbnail.component';
 
 
 
@@ -30,8 +31,8 @@ export class RegistrationListComponent extends TablePaginationSettingsConfig {
     this.tablePaginationSettings.showFirstLastButtons = false;
     this.tablePaginationSettings.enableEdit = true;
     this.tablePaginationSettings.enableDelete = true;
-    
-    
+
+
   }
  ngOnInit(){
 
@@ -61,7 +62,11 @@ del(row: PersonalInfo) {
 
 
   columns = [
-
+     {
+      name: 'imgUrl', displayName: 'Profile',
+       type:'text',valueType:'custom', isSearchable:false,
+       renderComponent:ImageThumbnailComponent
+    },
     {
       name: 'name',
       displayName: 'Full Name',

@@ -7,12 +7,13 @@ import { ColumnSettingsModel, TablePaginationSettingsConfig, TablePaginationSett
 import { CommonModule, formatDate } from '@angular/common';
 import { SharedLibraryModule } from '../../shared-library.module';
 import { FormsModule } from '@angular/forms';
+import { CustomViewComponent } from './custom-view.component';
 
 @Component({
     selector: 'app-table',
     templateUrl: './master-table.component.html',
     styleUrls: ['./Masterr-table.component.scss'],
-    imports: [MatPaginatorModule, SharedLibraryModule, FormsModule, CommonModule]
+    imports: [MatPaginatorModule, SharedLibraryModule, FormsModule, CommonModule,CustomViewComponent]
 })
 export class MasterTableComponent extends TablePaginationSettingsConfig implements OnInit, OnChanges {
   @Input() tableMaxHeight='80vh';

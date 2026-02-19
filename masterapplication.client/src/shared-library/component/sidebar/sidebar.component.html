@@ -1,10 +1,73 @@
-
+<!--
 <mat-nav-list class="sidebar-nav">
 
   <div class="sidebar-brand">
     <a class="navbar-brand" href="/dashboard">
       <div class="brand-logo">
-        <!-- <mat-icon>inventory_2</mat-icon> -->
+         <img src="logo-sm.png" alt="logo">
+        <span class="brand-text menu-text">DG Avaition Wing</span>
+      </div>
+    </a>
+  </div>
+
+
+  @for (menu of sideBarMenus; track menu.text) {
+    <div class="menu-item" [class.active-parent]="isMenuActive(menu)">
+      <a mat-list-item
+         class="menu-link"
+         (click)="toggleMenu(menu)"
+         [routerLink]="menu.children?.length ? null : menu.routerLink"
+         routerLinkActive="active"
+         [routerLinkActiveOptions]="{exact: true}">
+
+        <div class="menu-content-container">
+          <div class="menu-icon-badge">
+            <mat-icon [class.active-icon]="isMenuActive(menu)">{{menu.icon}}</mat-icon>
+          </div>
+
+          <span class="menu-text" [class.active-text]="isMenuActive(menu)">
+            {{menu.text}}
+          </span>
+
+          @if (menu.children && menu.children.length > 0) {
+            <span class="menu-indicator" [class.rotated]="isMenuExpanded(menu)">
+              <mat-icon>chevron_right</mat-icon>
+            </span>
+          }
+        </div>
+      </a>
+
+
+      @if (menu.children && menu.children.length > 0) {
+        <div class="submenu-container" [class.expanded]="isMenuExpanded(menu)">
+          @for (subMenu of menu.children; track subMenu.text) {
+            <a mat-list-item
+               class="submenu-item"
+               [routerLink]="subMenu.routerLink"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{exact: true}"
+               (click)="setActiveMenu(menu)">
+
+              <div class="submenu-content">
+                <div class="submenu-indicator"></div>
+                <mat-icon class="submenu-icon">{{subMenu.icon}}</mat-icon>
+                <span class="submenu-text">{{subMenu.text}}</span>
+              </div>
+            </a>
+          }
+        </div>
+      }
+    </div>
+  }
+</mat-nav-list> -->
+
+
+
+<mat-nav-list class="sidebar-nav">
+
+  <div class="sidebar-brand">
+    <a class="navbar-brand" href="/dashboard">
+      <div class="brand-logo ">
          <img src="logo-sm.png" alt="logo">
         <span class="brand-text menu-text">DG Avaition Wing</span>
       </div>
