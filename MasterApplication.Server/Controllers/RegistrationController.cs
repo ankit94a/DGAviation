@@ -49,7 +49,7 @@ namespace MasterApplication.Server.Controllers
             personalInfo.CreatedOn = DateTime.Now;
             personalInfo.IsDeleted = false;
             personalInfo.IsActive = true;
-
+            //personalInfo.IsActive = true;
             if (image != null && image.Length > 0)
             {
                 var folder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "profile-img");
